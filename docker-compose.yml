@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    container_name: regiflex_db
+    environment:
+      POSTGRES_DB: regiflex_db
+      POSTGRES_USER: regiflex_user
+      POSTGRES_PASSWORD: regiflex_password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - regiflex_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U regiflex_user -d regiflex_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../Dockerfile.backend
+    container_name: regiflex_backend
+    command: python wsgi.py
+    environment:
+      FLASK_APP: wsgi.py
+      FLASK_ENV: development
+      DATABASE_URL: postgresql://regiflex_user:regiflex_password@db:5432/regiflex_db
+      SECRET_KEY: uma-chave-secreta-muito-segura-para-desenvolvimento
+    volumes:
+      - ./backend:/app
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - regiflex_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../Dockerfile.frontend
+    container_name: regiflex_frontend
+    environment:
+      NODE_ENV: development
+      VITE_API_URL: http://localhost:5000/api
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - regiflex_network
+    command: npm run dev -- --host
+
+networks:
+  regiflex_network:
+    driver: bridge
+
+volumes:
+  db_data:
+
