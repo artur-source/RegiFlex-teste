@@ -50,12 +50,12 @@ services:
     container_name: regiflex_frontend
     environment:
       NODE_ENV: development
-      VITE_API_URL: http://localhost:5000/api
+      VITE_API_URL: http://backend:5000/api
     volumes:
       - ./frontend:/app
       - /app/node_modules
     ports:
-      - "3000:3000"
+      - "3000:5173"
     depends_on:
       - backend
     networks:

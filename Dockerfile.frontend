@@ -5,11 +5,11 @@ WORKDIR /app
 # Install pnpm
 RUN npm install -g pnpm
 
-COPY frontend/package.json .
-COPY frontend/pnpm-lock.yaml .
+COPY package.json .
+COPY pnpm-lock.yaml .
 RUN pnpm install
 
-COPY frontend/ .
+COPY . .
 
 EXPOSE 3000
 
