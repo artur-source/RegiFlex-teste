@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await fetch('/api/me', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/me`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
