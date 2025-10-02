@@ -58,6 +58,8 @@
     "sonner": "^2.0.3",
     "tailwind-merge": "^3.3.0",
     "tailwindcss": "^4.1.7",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
     "vaul": "^1.1.2",
     "zod": "^3.24.4"
   },
