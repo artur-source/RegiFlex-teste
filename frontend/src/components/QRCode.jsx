@@ -19,7 +19,7 @@ import {
   CheckCircle,
   AlertTriangle
 } from 'lucide-react';
-import QRCodeReact from 'qrcode.react';
+import { QRCodeSVG } from 'qrcode.react';
 import apiService from '../services/api';
 
 const QRCodeComponent = () => {
@@ -225,7 +225,7 @@ const QRCodeComponent = () => {
                 <div className="flex flex-col lg:flex-row gap-6">
                   <div className="flex-1 text-center">
                     <div id="qr-code-canvas" className="inline-block p-4 bg-white rounded-lg shadow-sm border">
-                      <QRCodeReact
+                      <QRCodeSVG
                         value={selectedPaciente.qr_code_data}
                         size={200}
                         level="M"
