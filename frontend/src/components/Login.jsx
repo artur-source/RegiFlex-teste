@@ -33,8 +33,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <Card className="w-full max-w-md shadow-lg">
+    <div className="min-h-screen flex items-center justify-center gradient-regiflex-light p-4">
+      <Card className="w-full max-w-md shadow-lg border-2">
         <CardHeader className="text-center space-y-4">
           <div className="flex justify-center">
             <img 
@@ -44,8 +44,8 @@ const Login = () => {
             />
           </div>
           <div>
-            <CardTitle className="text-2xl font-bold text-gray-900">
-              Bem-vindo ao RegiFlex
+            <CardTitle className="text-2xl font-bold">
+              Bem-vindo ao <span className="text-gradient-regiflex">RegiFlex</span>
             </CardTitle>
             <CardDescription className="text-gray-600">
               Faça login para acessar sua conta
@@ -96,7 +96,7 @@ const Login = () => {
 
             <Button 
               type="submit" 
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+              className="w-full gradient-regiflex hover:opacity-90 text-white font-semibold transition-opacity"
               disabled={loading}
             >
               {loading ? (

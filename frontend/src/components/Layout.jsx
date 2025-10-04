@@ -93,7 +93,7 @@ const Layout = ({ children, currentPage, onNavigate }) => {
                   variant={isActive ? "default" : "ghost"}
                   className={`w-full justify-start ${
                     isActive 
-                      ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                      ? 'gradient-regiflex text-white hover:opacity-90' 
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                   onClick={() => {
@@ -112,7 +112,7 @@ const Layout = ({ children, currentPage, onNavigate }) => {
           <div className="p-4 border-t">
             <div className="flex items-center space-x-3 mb-3">
               <Avatar className="h-10 w-10">
-                <AvatarFallback className="bg-blue-600 text-white">
+                <AvatarFallback className="gradient-regiflex text-white font-semibold">
                   {getUserInitials(user)}
                 </AvatarFallback>
               </Avatar>
