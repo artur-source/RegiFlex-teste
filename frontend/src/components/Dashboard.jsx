@@ -114,7 +114,9 @@ const Dashboard = () => {
                   {dashboardData?.estatisticas?.total_pacientes || 0}
                 </p>
               </div>
-              <Users className="h-8 w-8 text-blue-600" />
+              <div className="gradient-regiflex rounded-full p-3">
+                <Users className="h-8 w-8 text-white" />
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -128,7 +130,9 @@ const Dashboard = () => {
                   {dashboardData?.estatisticas?.sessoes_hoje || 0}
                 </p>
               </div>
-              <Calendar className="h-8 w-8 text-green-600" />
+              <div className="gradient-regiflex rounded-full p-3">
+                <Calendar className="h-8 w-8 text-white" />
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -142,7 +146,9 @@ const Dashboard = () => {
                   {dashboardData?.estatisticas?.sessoes_semana || 0}
                 </p>
               </div>
-              <CalendarCheck className="h-8 w-8 text-purple-600" />
+              <div className="gradient-regiflex rounded-full p-3">
+                <CalendarCheck className="h-8 w-8 text-white" />
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -156,7 +162,9 @@ const Dashboard = () => {
                   {dashboardData?.estatisticas?.sessoes_mes || 0}
                 </p>
               </div>
-              <TrendingUp className="h-8 w-8 text-orange-600" />
+              <div className="gradient-regiflex rounded-full p-3">
+                <TrendingUp className="h-8 w-8 text-white" />
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -258,7 +266,14 @@ const Dashboard = () => {
                   <XAxis dataKey="status" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="count" fill="#3B82F6" />
+                  <Bar dataKey="count" fill="url(#colorGradient)" />
+                  <defs>
+                    <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#2563EB" />
+                      <stop offset="50%" stopColor="#14B8A6" />
+                      <stop offset="100%" stopColor="#10B981" />
+                    </linearGradient>
+                  </defs>
                 </BarChart>
               </ResponsiveContainer>
             ) : (
@@ -282,7 +297,13 @@ const Dashboard = () => {
                   <XAxis dataKey="dia" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="count" fill="#10B981" />
+                  <Bar dataKey="count" fill="url(#colorGradient2)" />
+                  <defs>
+                    <linearGradient id="colorGradient2" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#14B8A6" />
+                      <stop offset="100%" stopColor="#10B981" />
+                    </linearGradient>
+                  </defs>
                 </BarChart>
               </ResponsiveContainer>
             ) : (

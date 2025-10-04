@@ -131,6 +131,46 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 **Lembre-se**: Este arquivo é uma ferramenta de comunicação importante. Mantenha-o atualizado e detalhado para facilitar o entendimento das mudanças por toda a equipe.
 
 
+## [2.1.0] - 2025-10-04
+
+### Modificado
+- **Identidade Visual**: Alinhamento completo com a página de marketing
+  - **O que foi modificado**: Sistema de cores CSS, componentes Login, Layout e Dashboard
+  - **Por que foi modificado**: A aplicação não refletia a identidade visual da marca RegiFlex (cores turquesa/verde e gradientes característicos estavam ausentes)
+  - **Resultado esperado**: Consistência visual de ~90% com a página de marketing, fortalecendo a identidade da marca
+
+### Adicionado
+- **Sistema de Cores Completo**: Cores turquesa (#14B8A6) e verde (#10B981) adicionadas à paleta
+  - **O que foi modificado**: Variáveis CSS `--secondary` e `--accent` no App.css
+  - **Por que foi modificado**: Cores características da marca estavam ausentes
+  - **Resultado esperado**: Paleta completa azul-turquesa-verde disponível para todos os componentes
+
+- **Classes de Gradiente**: 4 classes utilitárias para gradientes RegiFlex
+  - **O que foi modificado**: Adicionadas classes `gradient-regiflex`, `gradient-regiflex-horizontal`, `gradient-regiflex-light` e `text-gradient-regiflex`
+  - **Por que foi modificado**: Gradientes são elemento distintivo da identidade visual
+  - **Resultado esperado**: Gradientes reutilizáveis em toda a aplicação
+
+- **Gradientes no Login**: Fundo, título e botão com gradientes característicos
+  - **O que foi modificado**: Componente Login.jsx - fundo com gradiente suave, palavra "RegiFlex" com gradiente colorido, botão com gradiente completo
+  - **Por que foi modificado**: Primeira impressão do usuário deve refletir a identidade da marca
+  - **Resultado esperado**: Tela de login visualmente alinhada com página de marketing
+
+- **Gradientes no Layout**: Menu ativo e avatar com gradientes
+  - **O que foi modificado**: Componente Layout.jsx - menu ativo da sidebar e avatar do usuário
+  - **Por que foi modificado**: Elementos de navegação devem usar cores da marca
+  - **Resultado esperado**: Navegação visualmente consistente com identidade RegiFlex
+
+- **Gradientes no Dashboard**: Ícones em círculos e gráficos com gradientes
+  - **O que foi modificado**: Componente Dashboard.jsx - 4 ícones de estatísticas em círculos com gradiente, gráficos com barras gradientes
+  - **Por que foi modificado**: Dashboard é tela principal e deve exemplificar a identidade visual
+  - **Resultado esperado**: Dashboard moderno e alinhado com página de marketing
+
+### Documentação
+- **Documentação de Alterações**: Criados arquivos detalhando as mudanças visuais
+  - **O que foi modificado**: Adicionados `alteracoes_implementadas.md` e `paleta_cores_regiflex.txt`
+  - **Por que foi modificado**: Facilitar manutenção futura e compreensão das decisões de design
+  - **Resultado esperado**: Equipe pode consultar documentação para manter consistência visual
+
 ## [2.0.1] - 2025-10-04
 
 ### Corrigido
