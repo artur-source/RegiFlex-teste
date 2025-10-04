@@ -129,3 +129,13 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ```
 
 **Lembre-se**: Este arquivo é uma ferramenta de comunicação importante. Mantenha-o atualizado e detalhado para facilitar o entendimento das mudanças por toda a equipe.
+
+
+## [2.0.1] - 2025-10-04
+
+### Corrigido
+- **Erro de Tela Branca no Frontend**: Correção de um erro que causava a exibição de uma tela branca no frontend.
+  - **O que foi modificado**: Ajustes no código do frontend para resolver o problema de renderização inicial.
+  - **Por que foi modificado**: O erro impedia o carregamento correto da aplicação, tornando-a inutilizável.
+  - **Resultado esperado**: A aplicação frontend agora carrega e exibe corretamente a interface do usuário.
+

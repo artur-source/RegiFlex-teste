@@ -104,14 +104,8 @@ Para configurar e executar o projeto localmente usando Docker e Docker Compose:
     cd RegiFlex
     ```
 
-3.  **Execute o script de desenvolvimento:**
-    Este script irá instalar as dependências, iniciar o banco de dados PostgreSQL via Docker e configurar o banco de dados.
-    ```bash
-    ./scripts/dev.sh
-    ```
-
-4.  **Inicie os serviços:**
-    Após a execução do `dev.sh`, você pode iniciar os serviços (backend e frontend) usando Docker Compose:
+3.  **Inicie os serviços:**
+    Este comando irá instalar as dependências, iniciar o banco de dados PostgreSQL via Docker e configurar o banco de dados, além de iniciar os serviços (backend e frontend).
     ```bash
     sudo docker-compose up --build -d
     ```
