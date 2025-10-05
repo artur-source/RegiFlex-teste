@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
 import { 
   Plus, 
   Calendar, 
@@ -190,22 +190,21 @@ const Sessoes = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="paciente_id">Paciente *</Label>
-                <Select 
-                  value={formData.paciente_id} 
-                  onValueChange={(value) => setFormData({...formData, paciente_id: value})}
+                <select
+                  id="paciente_id"
+                  value={formData.paciente_id}
+                  onChange={(e) => setFormData({...formData, paciente_id: e.target.value})}
                   required
+                  disabled={formLoading}
+                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione um paciente" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {pacientes.map((paciente) => (
-                      <SelectItem key={paciente.id} value={paciente.id.toString()}>
-                        {paciente.nome_completo}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  <option value="">Selecione um paciente</option>
+                  {pacientes.map((paciente) => (
+                    <option key={paciente.id} value={paciente.id.toString()}>
+                      {paciente.nome_completo}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="space-y-2">
@@ -235,21 +234,20 @@ const Sessoes = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="tipo_sessao">Tipo de Sessão</Label>
-                <Select 
-                  value={formData.tipo_sessao} 
-                  onValueChange={(value) => setFormData({...formData, tipo_sessao: value})}
+                <select
+                  id="tipo_sessao"
+                  value={formData.tipo_sessao}
+                  onChange={(e) => setFormData({...formData, tipo_sessao: e.target.value})}
+                  disabled={formLoading}
+                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione o tipo" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="individual">Terapia Individual</SelectItem>
-                    <SelectItem value="casal">Terapia de Casal</SelectItem>
-                    <SelectItem value="familia">Terapia Familiar</SelectItem>
-                    <SelectItem value="grupo">Terapia em Grupo</SelectItem>
-                    <SelectItem value="avaliacao">Avaliação</SelectItem>
-                  </SelectContent>
-                </Select>
+                  <option value="">Selecione o tipo</option>
+                  <option value="individual">Terapia Individual</option>
+                  <option value="casal">Terapia de Casal</option>
+                  <option value="familia">Terapia Familiar</option>
+                  <option value="grupo">Terapia em Grupo</option>
+                  <option value="avaliacao">Avaliação</option>
+                </select>
               </div>
 
               <div className="space-y-2">
@@ -293,39 +291,31 @@ const Sessoes = () => {
         <CardContent className="p-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
-              <Select 
-                value={filters.status} 
-                onValueChange={(value) => setFilters({...filters, status: value})}
+              <select
+                value={filters.status}
+                onChange={(e) => setFilters({...filters, status: e.target.value})}
+                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Filtrar por status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">Todos os status</SelectItem>
-                  <SelectItem value="agendada">Agendada</SelectItem>
-                  <SelectItem value="realizada">Realizada</SelectItem>
-                  <SelectItem value="cancelada">Cancelada</SelectItem>
-                </SelectContent>
-              </Select>
+                <option value="">Todos os status</option>
+                <option value="agendada">Agendada</option>
+                <option value="realizada">Realizada</option>
+                <option value="cancelada">Cancelada</option>
+              </select>
             </div>
             
             <div className="flex-1">
-              <Select 
-                value={filters.paciente_id} 
-                onValueChange={(value) => setFilters({...filters, paciente_id: value})}
+              <select
+                value={filters.paciente_id}
+                onChange={(e) => setFilters({...filters, paciente_id: e.target.value})}
+                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Filtrar por paciente" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">Todos os pacientes</SelectItem>
-                  {pacientes.map((paciente) => (
-                    <SelectItem key={paciente.id} value={paciente.id.toString()}>
-                      {paciente.nome_completo}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                <option value="">Todos os pacientes</option>
+                {pacientes.map((paciente) => (
+                  <option key={paciente.id} value={paciente.id.toString()}>
+                    {paciente.nome_completo}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </CardContent>
