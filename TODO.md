@@ -1,0 +1,2 @@
+- [x] Modify AuthContext.jsx to use api service for login and getCurrentUser instead of direct fetch
+- [x] Test login functionality after changes (integration test run, backend needs to be started for full verification)

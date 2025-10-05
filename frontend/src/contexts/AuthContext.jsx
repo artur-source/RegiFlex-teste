@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import api from '../services/api';
 
 const AuthContext = createContext({});
 
@@ -26,19 +27,8 @@ export const AuthProvider = ({ children }) => {
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/me`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-      } else {
-        // Token inválido
-        logout();
-      }
+      const data = await api.getCurrentUser();
+      setUser(data.user);
     } catch (error) {
       console.error('Erro ao buscar usuário atual:', error);
       logout();
@@ -49,27 +39,14 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setToken(data.token);
-        setUser(data.user);
-        localStorage.setItem('token', data.token);
-        return { success: true };
-      } else {
-        return { success: false, message: data.message };
-      }
+      const data = await api.login(username, password);
+      setToken(data.token);
+      setUser(data.user);
+      localStorage.setItem('token', data.token);
+      return { success: true };
     } catch (error) {
       console.error('Erro no login:', error);
-      return { success: false, message: 'Erro de conexão' };
+      return { success: false, message: error.message || 'Erro de conexão' };
     }
   };
 
