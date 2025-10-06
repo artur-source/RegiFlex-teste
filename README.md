@@ -79,13 +79,29 @@ RegiFlex/
 │   ├── dev.sh                    # Configuração e inicialização do ambiente de desenvolvimento
 │   ├── deploy.sh                 # Script de deploy (placeholder)
 │   └── setup_db.sh               # Script de configuração do banco de dados (placeholder)
+├── docs/                         # Documentação e arquivos de texto organizados
+│   ├── analises/                 # Análises e comparações
+│   │   ├── ANALISE_REPOSITORIO.md
+│   │   ├── ANALISE_MARKETING_PAGE.md
+│   │   ├── COMPARACAO_SITE.md
+│   │   └── REFATORACAO_FORMULARIO.md
+│   ├── changelogs/               # Histórico de alterações
+│   │   ├── CHANGELOG.md
+│   │   └── CHANGELOG_FIX.md
+│   ├── planos/                   # Planos e arquitetura
+│   │   ├── PLANO_LOVABLE_SUPABASE.md
+│   │   └── RegiFlex_Plano_Arquitetural.md
+│   ├── relatorios/               # Relatórios diversos
+│   │   ├── RELATORIO_CONFORMIDADE.md
+│   │   └── RELATORIO_CORRECOES.md
+│   └── tutoriais/                # Tutoriais e guias
+│       └── RegiFlex_Tutorial_Completo_Windows.md
 ├── Dockerfile.backend            # Dockerfile para o backend
 ├── Dockerfile.frontend           # Dockerfile para o frontend
 ├── docker-compose.yml            # Definição dos serviços Docker
 ├── .env                          # Variáveis de ambiente para o Docker Compose
 ├── .gitignore                    # Arquivos e diretórios a serem ignorados pelo Git
 ├── LICENSE                       # Licença do projeto (MIT)
-├── RegiFlex_Plano_Arquitetural.md # Documento de plano arquitetural
 └── test_integration.py           # Script para testar a integração frontend/backend
 ```
 
