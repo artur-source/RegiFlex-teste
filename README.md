@@ -116,9 +116,9 @@ Para configurar e executar o projeto localmente usando Docker e Docker Compose:
     Abra seu navegador e acesse `http://localhost:3000` (ou `http://localhost:5173`).
 
 6.  **Credenciais de Teste:**
-    *   **Admin:** `admin` / `password`
-    *   **Psicólogo:** `psicologo1` / `password`
-    *   **Recepcionista:** `recepcionista1` / `password`
+    *   **Admin:** `admin@regiflex.com` / `password`
+    *   **Psicólogo:** `psicologo1@regiflex.com` / `password`
+    *   **Recepcionista:** `recepcionista1@regiflex.com` / `password`
 
 ## Testes de Integração
 

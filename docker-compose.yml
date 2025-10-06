@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_DB: regiflex_db
       POSTGRES_USER: regiflex_user
-      POSTGRES_PASSWORD: regiflex_password
+      POSTGRES_PASSWORD: Regiflex@admin123
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
@@ -31,7 +31,7 @@ services:
     environment:
       FLASK_APP: wsgi.py
       FLASK_ENV: development
-      DATABASE_URL: postgresql://regiflex_user:regiflex_password@db:5432/regiflex_db
+      DATABASE_URL: postgresql://regiflex_user:Regiflex%40admin123@db:5432/regiflex_db
       SECRET_KEY: uma-chave-secreta-muito-segura-para-desenvolvimento
     volumes:
       - ./backend:/app
