@@ -3,7 +3,7 @@ import os
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY") or "uma-chave-secreta-muito-segura"
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or \
-        "postgresql://regiflex_user:Regiflex%40admin123@db:5432/regiflex_db"
+        "postgresql://regiflex_user:password123@db:5432/regiflex_db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # CORS Configuration
