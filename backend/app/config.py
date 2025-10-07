@@ -11,6 +11,10 @@ class Config:
         "http://localhost:3000",  # Frontend development
         "http://localhost:5173",  # Vite development server
         "http://127.0.0.1:3000",
-        "http://127.0.0.1:5173"
+        "http://127.0.0.1:5173",
+        "http://frontend:5173",   # Docker frontend service
+        "http://frontend:3000",   # Docker frontend service (alternative)
+        "http://regiflex_frontend:5173",  # Docker container name
+        "http://regiflex_frontend:3000"   # Docker container name (alternative)
     ]
 
