@@ -42,6 +42,12 @@ services:
         condition: service_healthy
     networks:
       - regiflex_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   frontend:
     build:
@@ -57,7 +63,8 @@ services:
     ports:
       - "3000:5173"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     networks:
       - regiflex_network
     command: npm run dev -- --host
