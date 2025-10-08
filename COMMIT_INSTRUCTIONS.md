@@ -1,62 +1,58 @@
 # Instruções para Commits - RegiFlex
 
+**Versão:** 2.0.0  
+**Arquitetura:** Supabase + React.js
+
+Este documento fornece diretrizes para manter o histórico do projeto organizado e consistente após a migração para Supabase.
+
+---
+
 ## Estrutura de Commits Recomendada
 
-Para manter o histórico do projeto organizado, siga esta estrutura de commits:
-
-### 1. Commits de Refatoração Backend
+### 1. Commits de Configuração Supabase
 
 ```bash
-# Commit 1: Estrutura de pastas
-git add backend/app/api/v1/ backend/app/utils/ backend/app/middleware/
-git commit -m "[Refactor] Reorganização da estrutura de pastas do backend
+# Commit 1: Cliente Supabase
+git add frontend/src/lib/supabaseClient.js frontend/.env.example
+git commit -m "[Feature] Configuração do cliente Supabase
 
-- Criada estrutura api/v1/ para endpoints organizados
-- Adicionados módulos utils/ para utilitários
-- Criado middleware/ para tratamento de erros
-- Melhoria na organização e manutenibilidade"
+- Criado supabaseClient.js com configuração
+- Adicionado .env.example com variáveis necessárias
+- Integração com Supabase estabelecida
+- Melhoria na arquitetura do projeto"
 
-# Commit 2: Validações
-git add backend/app/utils/validators.py
-git commit -m "[Feature] Sistema de validações robustas
+# Commit 2: Serviços de API
+git add frontend/src/services/supabaseApi.js
+git commit -m "[Feature] Implementação de serviços com Supabase
 
-- Implementadas validações para CPF, email, telefone
-- Validação de data de nascimento com idade
-- Validação de nome com caracteres permitidos
-- Melhoria na segurança e consistência dos dados"
+- Criado supabaseApi.js com operações CRUD
+- Métodos para pacientes, sessões e usuários
+- Tratamento de erros padronizado
+- Melhoria na organização do código"
 
-# Commit 3: Tratamento de erros
-git add backend/app/middleware/ backend/app/utils/logger.py backend/app/utils/response.py
-git commit -m "[Feature] Sistema de tratamento de erros e logging
+# Commit 3: Contexto de Autenticação
+git add frontend/src/contexts/AuthContext.jsx
+git commit -m "[Refactor] Atualização do contexto de autenticação
 
-- Middleware global de tratamento de erros
-- Sistema de logging estruturado
-- Respostas padronizadas da API
-- Melhoria na experiência de debugging"
-
-# Commit 4: Endpoints API v1
-git add backend/app/api/v1/
-git commit -m "[Feature] Implementação da API v1
-
-- Endpoints organizados por funcionalidade
-- Validação de entrada em todos os endpoints
-- Logging de requisições e ações
-- Melhoria na estrutura e manutenibilidade"
+- Migrado para usar Supabase
+- Implementada autenticação simplificada
+- Gerenciamento de estado do usuário
+- Melhoria na segurança"
 ```
 
 ### 2. Commits de Refatoração Frontend
 
 ```bash
-# Commit 5: Componentes padronizados
-git add frontend/src/components/PatientForm.jsx frontend/src/components/ui/ErrorMessage.jsx
-git commit -m "[Refactor] Padronização de componentes React
+# Commit 4: Componentes atualizados
+git add frontend/src/components/
+git commit -m "[Refactor] Atualização de componentes para Supabase
 
-- Criado PatientForm.jsx unificado
-- Componentes de mensagem reutilizáveis
-- Remoção de arquivos duplicados
+- Componentes adaptados para nova API
+- Remoção de referências ao Flask
+- Tratamento de erros aprimorado
 - Melhoria na consistência da UI"
 
-# Commit 6: Hooks e utilitários
+# Commit 5: Hooks e utilitários
 git add frontend/src/hooks/ frontend/src/lib/validators.js
 git commit -m "[Feature] Sistema de validação e hooks customizados
 
@@ -66,44 +62,73 @@ git commit -m "[Feature] Sistema de validação e hooks customizados
 - Validação em tempo real"
 ```
 
-### 3. Commits de Testes
+### 3. Commits de Banco de Dados
 
 ```bash
-# Commit 7: Testes backend
-git add backend/tests/ backend/requirements.txt
-git commit -m "[Test] Implementação de testes unitários
+# Commit 6: Schema do banco
+git add database/schema.sql
+git commit -m "[Database] Schema atualizado para Supabase
 
-- Testes para autenticação e pacientes
-- Testes para validadores
-- Cobertura de testes básica
-- Melhoria na confiabilidade do código"
+- Tabelas: usuarios, pacientes, sessoes, evolucao, logs
+- Constraints e relacionamentos definidos
+- Compatível com PostgreSQL do Supabase
+- Melhoria na estrutura de dados"
 ```
 
 ### 4. Commits de Documentação
 
 ```bash
-# Commit 8: Documentação técnica
-git add DOCUMENTATION.md CHANGELOG.md
-git commit -m "[Docs] Documentação técnica completa
+# Commit 7: README atualizado
+git add README.md
+git commit -m "[Docs] Atualização do README para arquitetura Supabase
 
-- Documentação detalhada da arquitetura
-- Changelog com histórico de mudanças
-- Instruções para futuras modificações
-- Melhoria na manutenibilidade do projeto"
+- Instruções de instalação simplificadas
+- Tecnologias atualizadas
+- Remoção de referências a Docker
+- Melhoria na clareza da documentação"
+
+# Commit 8: Tutorial de instalação
+git add docs/tutoriais/RegiFlex_Tutorial_Completo_Windows.md
+git commit -m "[Docs] Tutorial de instalação atualizado
+
+- Processo simplificado sem Docker
+- Instruções para configuração do Supabase
+- Solução de problemas comuns
+- Melhoria na experiência do usuário"
+
+# Commit 9: Documentação de integrações
+git add docs/planos/INTEGRACOES_WIX_NOTION.md
+git commit -m "[Docs] Documentação de integrações Wix e Notion
+
+- Casos de uso e benefícios
+- Implementação técnica
+- Próximos passos
+- Melhoria no planejamento do projeto"
+
+# Commit 10: CHANGELOG
+git add CHANGELOG.md
+git commit -m "[Docs] Criação do CHANGELOG
+
+- Histórico completo de versões
+- Detalhamento da migração Supabase
+- Benefícios e mudanças
+- Melhoria na rastreabilidade"
 ```
 
-### 5. Commits de Dependências
+### 5. Commits de Página de Marketing
 
 ```bash
-# Commit 9: Atualização de dependências
-git add backend/requirements.txt frontend/package.json
-git commit -m "[Deps] Atualização de dependências
+# Commit 11: Atualização da página de marketing
+git add index.html
+git commit -m "[Docs] Atualização da página de marketing
 
-- Flask 2.3.2 → 3.0.0
-- SQLAlchemy 2.0.21 → 2.0.23
-- Pandas 2.1.1 → 2.1.4
-- Melhoria na segurança e performance"
+- Tecnologias backend atualizadas para Supabase
+- Remoção de Docker e Flask
+- Adicionadas novas tecnologias
+- Melhoria na apresentação do projeto"
 ```
+
+---
 
 ## Padrão de Mensagens de Commit
 
@@ -122,75 +147,68 @@ git commit -m "[Deps] Atualização de dependências
 - **[Refactor]**: Refatoração de código
 - **[Test]**: Adição ou correção de testes
 - **[Docs]**: Documentação
-- **[Deps]**: Dependências
+- **[Database]**: Alterações no banco de dados
 - **[Style]**: Formatação, espaços, etc.
 - **[Perf]**: Melhoria de performance
 - **[Security]**: Correções de segurança
+- **[Deploy]**: Configurações de deploy
 
 ### Exemplos de Boas Práticas:
 
 ```bash
 # ✅ Bom
-git commit -m "[Feature] Sistema de validação de CPF
+git commit -m "[Feature] Integração com Supabase Auth
 
-- Implementada validação completa com dígitos verificadores
-- Formatação automática no frontend
-- Validação em tempo real
-- Melhoria na experiência do usuário"
+- Implementada autenticação via Supabase
+- Login e logout funcionais
+- Gerenciamento de sessão
+- Melhoria na segurança do sistema"
 
 # ❌ Ruim
-git commit -m "fix cpf"
+git commit -m "fix auth"
 ```
 
-## Sequência de Commits Recomendada
+---
 
-### 1. Primeiro: Estrutura Base
+## Sequência de Commits Recomendada (Migração Supabase)
+
+### 1. Primeiro: Configuração Base
 ```bash
-git add backend/app/api/v1/ backend/app/utils/ backend/app/middleware/
-git commit -m "[Refactor] Reorganização da estrutura de pastas do backend"
+git add frontend/src/lib/supabaseClient.js frontend/.env.example
+git commit -m "[Feature] Configuração do cliente Supabase"
 ```
 
-### 2. Segundo: Validações
+### 2. Segundo: Serviços de API
 ```bash
-git add backend/app/utils/validators.py
-git commit -m "[Feature] Sistema de validações robustas"
+git add frontend/src/services/supabaseApi.js frontend/src/services/api.js
+git commit -m "[Feature] Implementação de serviços com Supabase"
 ```
 
-### 3. Terceiro: Tratamento de Erros
+### 3. Terceiro: Autenticação
 ```bash
-git add backend/app/middleware/ backend/app/utils/logger.py backend/app/utils/response.py
-git commit -m "[Feature] Sistema de tratamento de erros e logging"
+git add frontend/src/contexts/AuthContext.jsx
+git commit -m "[Refactor] Atualização do contexto de autenticação"
 ```
 
-### 4. Quarto: API v1
+### 4. Quarto: Componentes
 ```bash
-git add backend/app/api/v1/
-git commit -m "[Feature] Implementação da API v1"
+git add frontend/src/components/
+git commit -m "[Refactor] Atualização de componentes para Supabase"
 ```
 
-### 5. Quinto: Frontend
+### 5. Quinto: Documentação
 ```bash
-git add frontend/src/components/PatientForm.jsx frontend/src/hooks/ frontend/src/lib/validators.js
-git commit -m "[Refactor] Padronização de componentes e validações do frontend"
+git add README.md CHANGELOG.md docs/
+git commit -m "[Docs] Atualização completa da documentação"
 ```
 
-### 6. Sexto: Testes
+### 6. Sexto: Página de Marketing
 ```bash
-git add backend/tests/
-git commit -m "[Test] Implementação de testes unitários"
+git add index.html
+git commit -m "[Docs] Atualização da página de marketing"
 ```
 
-### 7. Sétimo: Documentação
-```bash
-git add DOCUMENTATION.md CHANGELOG.md
-git commit -m "[Docs] Documentação técnica completa"
-```
-
-### 8. Oitavo: Dependências
-```bash
-git add backend/requirements.txt
-git commit -m "[Deps] Atualização de dependências"
-```
+---
 
 ## Verificação Antes do Commit
 
@@ -200,6 +218,7 @@ git commit -m "[Deps] Atualização de dependências"
 - [ ] Arquivos relacionados agrupados
 - [ ] Não há arquivos desnecessários
 - [ ] Documentação atualizada (se necessário)
+- [ ] Variáveis de ambiente não commitadas (apenas .env.example)
 
 ### Comandos de Verificação:
 ```bash
@@ -211,7 +230,12 @@ git diff --cached
 
 # Verificar histórico
 git log --oneline -5
+
+# Verificar se .env não está sendo commitado
+git status | grep ".env"
 ```
+
+---
 
 ## Push para o Repositório
 
@@ -233,6 +257,8 @@ git log --oneline -10
 git status
 ```
 
+---
+
 ## Resolução de Conflitos
 
 ### Se houver conflitos:
@@ -246,7 +272,12 @@ git add .
 
 # Fazer commit da resolução
 git commit -m "[Fix] Resolução de conflitos de merge"
+
+# Push das mudanças
+git push origin main
 ```
+
+---
 
 ## Rollback (se necessário)
 
@@ -257,7 +288,7 @@ git reset --soft HEAD~1
 
 ### Desfazer mudanças em arquivo específico:
 ```bash
-git checkout -- arquivo.py
+git checkout -- arquivo.js
 ```
 
 ### Desfazer todas as mudanças não commitadas:
@@ -265,28 +296,162 @@ git checkout -- arquivo.py
 git reset --hard HEAD
 ```
 
+### Reverter commit já pushado:
+```bash
+git revert <commit-hash>
+git push origin main
+```
+
+---
+
 ## Comandos Úteis
 
 ### Visualizar histórico:
 ```bash
-git log --oneline --graph
+# Histórico gráfico
+git log --oneline --graph --all
+
+# Histórico detalhado
+git log --stat
+
+# Histórico de um arquivo específico
+git log --follow -- arquivo.js
 ```
 
 ### Verificar diferenças:
 ```bash
+# Diferenças não staged
+git diff
+
+# Diferenças staged
+git diff --cached
+
+# Diferenças com commit anterior
 git diff HEAD~1
 ```
 
 ### Verificar arquivos modificados:
 ```bash
 git diff --name-only
+git status --porcelain
 ```
 
-### Verificar status detalhado:
+### Buscar em commits:
 ```bash
-git status --porcelain
+# Buscar por mensagem
+git log --grep="Supabase"
+
+# Buscar por autor
+git log --author="nome"
+
+# Buscar por data
+git log --since="2025-10-01"
 ```
 
 ---
 
-**Lembre-se**: Commits bem organizados facilitam a manutenção e colaboração no projeto. Siga sempre o padrão estabelecido para manter a consistência.
+## Boas Práticas Específicas para Supabase
+
+### 1. Nunca Commitar Credenciais
+
+❌ **Nunca faça:**
+```bash
+git add frontend/.env
+```
+
+✅ **Sempre faça:**
+```bash
+git add frontend/.env.example
+```
+
+### 2. Documentar Mudanças no Schema
+
+Sempre que alterar o schema do banco de dados:
+
+```bash
+git add database/schema.sql
+git commit -m "[Database] Atualização do schema
+
+- Adicionada coluna X na tabela Y
+- Criado índice para melhorar performance
+- Atualizado relacionamento entre tabelas
+- Melhoria na estrutura de dados"
+```
+
+### 3. Atualizar Documentação Junto com Código
+
+Quando adicionar uma nova funcionalidade:
+
+```bash
+# Commit do código
+git add frontend/src/components/NovoComponente.jsx
+git commit -m "[Feature] Novo componente de relatórios"
+
+# Commit da documentação
+git add README.md docs/
+git commit -m "[Docs] Documentação do componente de relatórios"
+```
+
+---
+
+## Integração Contínua
+
+### Antes de fazer push:
+
+```bash
+# 1. Atualizar branch local
+git pull origin main
+
+# 2. Executar testes (se houver)
+npm test
+
+# 3. Verificar build
+npm run build
+
+# 4. Verificar lint (se configurado)
+npm run lint
+
+# 5. Push
+git push origin main
+```
+
+---
+
+## Trabalhando com Branches
+
+### Criar branch para nova funcionalidade:
+```bash
+git checkout -b feature/nome-da-funcionalidade
+```
+
+### Fazer commits na branch:
+```bash
+git add .
+git commit -m "[Feature] Descrição"
+```
+
+### Merge na main:
+```bash
+git checkout main
+git merge feature/nome-da-funcionalidade
+git push origin main
+```
+
+### Deletar branch:
+```bash
+git branch -d feature/nome-da-funcionalidade
+```
+
+---
+
+## Conclusão
+
+Commits bem organizados facilitam a manutenção e colaboração no projeto. Com a nova arquitetura Supabase, é ainda mais importante manter a documentação atualizada e as mensagens de commit claras.
+
+**Lembre-se**: Cada commit deve contar uma história clara do que foi feito e por quê.
+
+---
+
+**Documento atualizado por:** Equipe RegiFlex  
+**Versão:** 2.0.0  
+**Data:** Outubro de 2025
