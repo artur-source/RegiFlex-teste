@@ -73,8 +73,8 @@ git clone https://github.com/artur-source/RegiFlex-teste.git
 cd RegiFlex-teste
 
 # 2. Configure as variáveis de ambiente
-cp .env.example .env
-# Edite o arquivo .env com suas credenciais do Supabase
+cp .env.example frontend/.env
+# Edite o arquivo frontend/.env com suas credenciais do Supabase
 
 # 3. Instale as dependências
 cd frontend
@@ -97,7 +97,7 @@ A aplicação estará disponível em `http://localhost:5173`
    - Vá para o SQL Editor no dashboard do Supabase
    - Execute o conteúdo do arquivo `database/schema.sql`
 
-3. **Atualize o arquivo `.env`:**
+3. **Atualize o arquivo `frontend/.env`:**
    ```env
    VITE_SUPABASE_URL=https://seu-projeto.supabase.co
    VITE_SUPABASE_ANON_KEY=sua-chave-publica-aqui
