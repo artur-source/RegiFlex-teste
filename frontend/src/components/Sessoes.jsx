@@ -30,7 +30,7 @@ const Sessoes = () => {
   const [showForm, setShowForm] = useState(false);
   const [selectedSessao, setSelectedSessao] = useState(null);
   const [formData, setFormData] = useState({
-    paciente_id: '',
+    paciente_id: null,
     data_hora: '',
     duracao_minutos: 50,
     tipo_sessao: '',
@@ -95,7 +95,7 @@ const Sessoes = () => {
   const handleEdit = (sessao) => {
     setSelectedSessao(sessao);
     setFormData({
-      paciente_id: sessao.paciente_id.toString(),
+      paciente_id: sessao.paciente_id || null,
       data_hora: new Date(sessao.data_hora).toISOString().slice(0, 16),
       duracao_minutos: sessao.duracao_minutos || 50,
       tipo_sessao: sessao.tipo_sessao || '',
@@ -115,7 +115,7 @@ const Sessoes = () => {
 
   const resetForm = () => {
     setFormData({
-      paciente_id: '',
+      paciente_id: null,
       data_hora: '',
       duracao_minutos: 50,
       tipo_sessao: '',
@@ -193,7 +193,7 @@ const Sessoes = () => {
                 <select
                   id="paciente_id"
                   value={formData.paciente_id}
-                  onChange={(e) => setFormData({...formData, paciente_id: e.target.value})}
+                  onChange={(e) => setFormData({...formData, paciente_id: e.target.value ? parseInt(e.target.value) : null})
                   required
                   disabled={formLoading}
                   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"

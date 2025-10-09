@@ -1,12 +1,6 @@
-#!/usr/bin/env node
 
-/**
- * Script de Teste Completo do RegiFlex
- * Testa todas as funcionalidades principais do sistema
- */
-
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 console.log('🚀 INICIANDO TESTE COMPLETO DO REGIFLEX\n');
 
@@ -235,3 +229,4 @@ log('- Configurações de Deploy: Prontas para Vercel e Netlify', 'green');
 log('- Qualidade do Código: Boa estrutura com algumas melhorias possíveis', 'yellow');
 
 log('\n✨ O RegiFlex está pronto para uso em produção!', 'bold');
+
