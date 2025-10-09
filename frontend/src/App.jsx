@@ -7,6 +7,7 @@ import Pacientes from './components/Pacientes';
 import Sessoes from './components/Sessoes';
 import QRCodeComponent from './components/QRCode';
 import IA from './components/IA';
+import Integracoes from './components/Integracoes';
 import './App.css';
 
 // Componente para páginas ainda não implementadas
@@ -49,6 +50,8 @@ const AppContent = () => {
         return <ComingSoon title="Relatórios" />;
       case 'ia':
         return <IA />;
+      case 'integracoes':
+        return <Integracoes />;
       case 'configuracoes':
         return <ComingSoon title="Configurações" />;
       default:

@@ -27,6 +27,7 @@ const Layout = ({ children, currentPage, onNavigate }) => {
     { id: 'qr', label: 'QR Code', icon: QrCode },
     { id: 'relatorios', label: 'Relatórios', icon: FileText },
     { id: 'ia', label: 'IA & Alertas', icon: Brain },
+    { id: 'integracoes', label: 'Integrações', icon: Settings },
   ];
 
   // Adicionar configurações apenas para admin

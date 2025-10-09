@@ -207,3 +207,26 @@ Este projeto está licenciado sob a **Licença MIT** - veja o arquivo [LICENSE](
 
 </div>
 
+
+
+
+## 🔍 Análise de Integrações e Alinhamento de Marketing
+
+Realizamos uma análise completa sobre a viabilidade de integrações com ferramentas externas e o alinhamento do projeto com seu site de marketing.
+
+### Análise de Integrações
+
+Avaliamos o potencial de integração com ferramentas como **n8n**, **Linear**, **Wix** e outras. A arquitetura atual baseada em Supabase se mostrou altamente extensível.
+
+- **Alta Prioridade:** Integração com **n8n** para automação de fluxos de trabalho (notificações, relatórios).
+- **Média Prioridade:** Integração com **Linear** para gestão de feedback e com **Wix** para agendamento em sites externos.
+
+📖 **Relatório Completo:** [Análise de Viabilidade de Integrações](docs/ANALISE_INTEGRACOES.md)
+
+### Alinhamento com o Site de Marketing
+
+O site de marketing está, em geral, alinhado com o estado atual do projeto. No entanto, identificamos pequenas discrepâncias, principalmente na descrição de funcionalidades como "IA Integrada" e "Relatórios Avançados", que estão em um estágio mais inicial do que o marketing sugere.
+
+📖 **Relatório Completo:** [Análise do Site de Marketing](docs/marketing_site_analysis.md)
+
+---
