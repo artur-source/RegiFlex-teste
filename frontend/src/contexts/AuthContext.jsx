@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = async (username, password) => {
+  const login = async (username, _password) => {
     try {
       // Buscar usuário pelo username
       const { data: usuarios, error: searchError } = await supabase

@@ -2,114 +2,208 @@
 
 ![RegiFlex Logo](frontend/src/assets/regiflex-logo.jpg)
 
-## Visão Geral
+## 🎯 Visão Geral
 
-O RegiFlex é um sistema completo de gestão para clínicas de psicologia, desenvolvido para simplificar o registro, acompanhamento e análise de informações de pacientes e sessões. Ele oferece uma interface intuitiva e moderna, com funcionalidades que abrangem desde o cadastro de pacientes e agendamento de sessões até a geração de relatórios.
+O RegiFlex é um **sistema moderno e completo** de gestão para clínicas de psicologia, desenvolvido para simplificar o registro, acompanhamento e análise de informações de pacientes e sessões. Com uma interface intuitiva e responsiva, oferece funcionalidades que abrangem desde o cadastro de pacientes até a geração de relatórios avançados.
 
-Esta versão foi totalmente migrada para usar **Supabase** como backend, eliminando a necessidade de um servidor próprio e aproveitando os benefícios de um backend gerenciado, escalável e com banco de dados real-time.
+**Arquitetura Moderna:** Totalmente baseada em **Supabase** como Backend-as-a-Service, eliminando a complexidade de gerenciar servidores próprios e oferecendo escalabilidade automática, segurança robusta e banco de dados real-time.
 
-## Funcionalidades Principais
+## ✨ Funcionalidades Principais
 
-- **Gestão de Pacientes:** Cadastro completo de informações demográficas, contato e histórico.
-- **Gestão de Sessões:** Agendamento, registro de sessões e evolução do paciente.
-- **Autenticação e Autorização:** Sistema de login seguro com diferentes perfis de usuário (Admin, Psicólogo, Recepcionista) gerenciado pelo Supabase.
-- **QR Code:** Geração de QR Codes para acesso rápido a informações de pacientes.
-- **Backend Gerenciado:** Utiliza Supabase para banco de dados, autenticação e APIs, garantindo escalabilidade e segurança.
+- **👥 Gestão de Pacientes** - Cadastro completo com informações demográficas, contato e histórico médico
+- **📅 Gestão de Sessões** - Agendamento inteligente, registro detalhado e acompanhamento da evolução
+- **🔐 Autenticação Segura** - Sistema de login robusto com diferentes perfis (Admin, Psicólogo, Recepcionista)
+- **📱 QR Code** - Geração e leitura de QR Codes para acesso rápido às informações dos pacientes
+- **📊 Dashboard Intuitivo** - Visão geral com métricas importantes e gráficos interativos
+- **🤖 IA Integrada** - Análise de padrões e alertas inteligentes (em desenvolvimento)
 
-## Tecnologias Utilizadas
+## 🚀 Tecnologias Utilizadas
 
 ### Backend (Supabase)
-
-- **Plataforma:** Supabase
-- **Banco de Dados:** PostgreSQL
-- **Autenticação:** Supabase Auth
-- **API:** API RESTful gerada automaticamente pelo Supabase
+- **Plataforma:** [Supabase](https://supabase.com) - Backend-as-a-Service
+- **Banco de Dados:** PostgreSQL com Row Level Security (RLS)
+- **Autenticação:** Supabase Auth com JWT
+- **API:** RESTful API gerada automaticamente
+- **Real-time:** Subscriptions em tempo real
 
 ### Frontend (React.js)
-
-- **Framework:** React.js
-- **Gerenciador de Pacotes:** npm
-- **Build Tool:** Vite
-- **Cliente Supabase:** `@supabase/supabase-js`
-- **Estilização:** Tailwind CSS
-- **Componentes UI:** Shadcn/ui
+- **Framework:** React 18.3.1 com Hooks
+- **Build Tool:** Vite 5.2.0 para desenvolvimento rápido
+- **Estilização:** Tailwind CSS 3.4.4 para design responsivo
+- **Componentes:** Shadcn/ui para interface consistente
+- **Roteamento:** React Router 7.6.1
+- **Gráficos:** Recharts para visualizações
 - **Ícones:** Lucide React
-- **Gráficos:** Recharts
 
-## Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```
 RegiFlex-teste/
-├── frontend/                     # Aplicação React.js
-│   ├── public/                   # Arquivos estáticos
-│   ├── src/                      # Código fonte do React
-│   │   ├── assets/               # Imagens e outros assets
-│   │   ├── components/           # Componentes reutilizáveis (Login, Layout, etc.)
-│   │   ├── contexts/             # Contextos React (AuthContext)
-│   │   ├── lib/                  # Bibliotecas e clientes, como o supabaseClient.js
-│   │   ├── services/             # Serviços de API para comunicação com o Supabase
-│   │   ├── App.jsx               # Componente principal da aplicação
-│   │   ├── main.jsx              # Ponto de entrada do React
-│   │   └── index.css             # Estilos globais
-│   ├── .env.example              # Exemplo de variáveis de ambiente
-│   ├── .gitignore                # Arquivos ignorados pelo Git
-│   └── package.json              # Dependências do Node.js/React
-├── docs/                         # Documentação e arquivos de texto organizados
-├── .gitignore                    # Arquivos e diretórios a serem ignorados pelo Git
-└── README.md                     # Este arquivo
+├── 📂 frontend/                  # Aplicação React.js
+│   ├── 📂 public/               # Arquivos estáticos
+│   ├── 📂 src/                  # Código fonte
+│   │   ├── 📂 components/       # Componentes React reutilizáveis
+│   │   ├── 📂 contexts/         # Context API (AuthContext)
+│   │   ├── 📂 lib/              # Configurações (Supabase client)
+│   │   ├── 📂 services/         # Serviços de API
+│   │   ├── 📂 assets/           # Imagens e recursos
+│   │   └── 📄 App.jsx           # Componente principal
+│   └── 📄 package.json          # Dependências do projeto
+├── 📂 database/                 # Schema do banco de dados
+├── 📂 docs/                     # Documentação técnica
+├── 📄 ARCHITECTURE.md           # Documentação da arquitetura
+├── 📄 CONTRIBUTING.md           # Guia de contribuição
+├── 📄 DEPLOYMENT.md             # Instruções de deploy
+└── 📄 README.md                 # Este arquivo
 ```
 
-## Como Executar (Ambiente de Desenvolvimento)
+## ⚡ Início Rápido
 
-Para configurar e executar o projeto localmente:
+### Pré-requisitos
 
-1.  **Pré-requisitos:**
-    *   Node.js e npm instalados.
-    *   Uma conta no [Supabase](https://supabase.com) com um projeto criado.
+- **Node.js** 18.0+ e npm
+- **Conta Supabase** (gratuita) - [Criar conta](https://supabase.com)
+- **Git** para clonagem do repositório
 
-2.  **Clone o repositório:**
-    ```bash
-    git clone https://github.com/artur-source/RegiFlex-teste.git
-    cd RegiFlex-teste/frontend
-    ```
+### 🛠️ Configuração Local
 
-3.  **Instale as dependências:**
-    ```bash
-    npm install
-    ```
+```bash
+# 1. Clone o repositório
+git clone https://github.com/artur-source/RegiFlex-teste.git
+cd RegiFlex-teste
 
-4.  **Configure as Variáveis de Ambiente:**
-    - Crie um arquivo `.env` na pasta `frontend/`.
-    - Adicione as credenciais do seu projeto Supabase, usando o `.env.example` como referência:
-      ```env
-      VITE_SUPABASE_URL=https://your-project-id.supabase.co
-      VITE_SUPABASE_ANON_KEY=your-public-anon-key
-      ```
+# 2. Configure as variáveis de ambiente
+cp .env.example .env
+# Edite o arquivo .env com suas credenciais do Supabase
 
-5.  **Configure o Banco de Dados:**
-    - Acesse o seu projeto no Supabase.
-    - Vá para o "SQL Editor" e execute o script encontrado em `RegiFlex-teste/database/schema.sql` para criar as tabelas necessárias.
+# 3. Instale as dependências
+cd frontend
+npm install
 
-6.  **Inicie o servidor de desenvolvimento:**
-    ```bash
-    npm run dev
-    ```
-    - A aplicação estará disponível em `http://localhost:5173`.
+# 4. Inicie o servidor de desenvolvimento
+npm run dev
+```
 
-7.  **Credenciais de Teste:**
-    - Para testar, crie um usuário na tabela `usuarios` do seu banco de dados Supabase. A autenticação simplificada atual buscará o usuário por `username` e não validará a senha.
-    - **Exemplo:** `username: admin`
+A aplicação estará disponível em `http://localhost:5173`
 
-## Deploy
+### 🗄️ Configuração do Banco de Dados
 
-- **Backend:** O backend já está "deployado" e gerenciado pelo Supabase.
-- **Frontend:** A aplicação frontend é um site estático e pode ser facilmente "deployada" em serviços como Vercel, Netlify ou GitHub Pages.
+1. **Crie um projeto no Supabase:**
+   - Acesse [supabase.com](https://supabase.com)
+   - Clique em "New Project"
+   - Anote a URL e a chave pública do projeto
 
-## Contribuição
+2. **Configure o schema:**
+   - Vá para o SQL Editor no dashboard do Supabase
+   - Execute o conteúdo do arquivo `database/schema.sql`
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
+3. **Atualize o arquivo `.env`:**
+   ```env
+   VITE_SUPABASE_URL=https://seu-projeto.supabase.co
+   VITE_SUPABASE_ANON_KEY=sua-chave-publica-aqui
+   ```
 
-## Licença
+### 👤 Primeiro Acesso
 
-Este projeto está licenciado sob a Licença MIT.
+Para criar o primeiro usuário administrador, execute no SQL Editor do Supabase:
+
+```sql
+INSERT INTO usuarios (username, email, password_hash, role) 
+VALUES ('admin', 'admin@regiflex.com', 'temp_password', 'admin');
+```
+
+**Login:** `admin` | **Senha:** Qualquer senha (autenticação simplificada para desenvolvimento)
+
+## 🚀 Deploy em Produção
+
+### Opções de Hospedagem
+
+**Frontend (Recomendado: Vercel)**
+- ✅ **Vercel** - Deploy automático via Git, otimizado para React
+- ✅ **Netlify** - Alternativa robusta com recursos similares  
+- ✅ **GitHub Pages** - Gratuito para projetos open source
+
+**Backend**
+- ✅ **Supabase** - Totalmente gerenciado, sem configuração adicional necessária
+
+### Deploy Rápido na Vercel
+
+1. **Conecte seu repositório GitHub à Vercel**
+2. **Configure as variáveis de ambiente:**
+   ```
+   VITE_SUPABASE_URL=https://seu-projeto.supabase.co
+   VITE_SUPABASE_ANON_KEY=sua-chave-publica
+   ```
+3. **Deploy automático** - Cada push na branch main fará deploy automaticamente
+
+📖 **Guia Completo:** Consulte [DEPLOYMENT.md](DEPLOYMENT.md) para instruções detalhadas
+
+## 📚 Documentação
+
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Documentação técnica da arquitetura
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Guia para contribuidores
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Instruções completas de deploy
+- **[CHANGELOG.md](CHANGELOG.md)** - Histórico de versões
+
+## 🤝 Contribuição
+
+Contribuições são muito bem-vindas! Este é um projeto open source e toda ajuda é apreciada.
+
+### Como Contribuir
+
+1. **Fork** o repositório
+2. **Crie uma branch** para sua feature (`git checkout -b feature/nova-funcionalidade`)
+3. **Commit** suas mudanças (`git commit -m 'feat: adicionar nova funcionalidade'`)
+4. **Push** para a branch (`git push origin feature/nova-funcionalidade`)
+5. **Abra um Pull Request**
+
+📖 **Guia Detalhado:** Consulte [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## 🐛 Reportar Bugs
+
+Encontrou um bug? Ajude-nos a melhorar!
+
+1. **Verifique** se o bug já foi reportado nas [Issues](https://github.com/artur-source/RegiFlex-teste/issues)
+2. **Crie uma nova Issue** com detalhes sobre o problema
+3. **Inclua** passos para reproduzir e screenshots se possível
+
+## 💡 Solicitar Funcionalidades
+
+Tem uma ideia para melhorar o RegiFlex?
+
+1. **Abra uma Issue** com o label "enhancement"
+2. **Descreva** detalhadamente a funcionalidade desejada
+3. **Explique** como ela beneficiaria os usuários
+
+## 📊 Status do Projeto
+
+- ✅ **Gestão de Pacientes** - Completo
+- ✅ **Gestão de Sessões** - Completo  
+- ✅ **Autenticação** - Completo
+- ✅ **QR Code** - Completo
+- ✅ **Dashboard** - Completo
+- 🚧 **Relatórios Avançados** - Em desenvolvimento
+- 🚧 **IA Integrada** - Em desenvolvimento
+- 📋 **Mobile App** - Planejado
+
+## 🏆 Reconhecimentos
+
+- **[Supabase](https://supabase.com)** - Backend-as-a-Service incrível
+- **[Shadcn/ui](https://ui.shadcn.com)** - Componentes UI elegantes
+- **[Tailwind CSS](https://tailwindcss.com)** - Framework CSS utilitário
+- **Comunidade Open Source** - Por todas as bibliotecas utilizadas
+
+## 📄 Licença
+
+Este projeto está licenciado sob a **Licença MIT** - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+---
+
+<div align="center">
+
+**Desenvolvido com ❤️ para simplificar a gestão de clínicas de psicologia**
+
+[🌟 Star no GitHub](https://github.com/artur-source/RegiFlex-teste) • [🐛 Reportar Bug](https://github.com/artur-source/RegiFlex-teste/issues) • [💡 Solicitar Feature](https://github.com/artur-source/RegiFlex-teste/issues)
+
+</div>
 

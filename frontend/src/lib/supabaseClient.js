@@ -1,8 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Configuração do Supabase
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://upbsldljfejaieuveknr.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwYnNsZGxqZmVqYWlldXZla25yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5MDU5MzYsImV4cCI6MjA3NTQ4MTkzNn0.0Sw_uG6Vs-a69navV4CJ48qKAeX3qym9NLKIL7hIevk';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error(
+    'Variáveis de ambiente VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY são obrigatórias. ' +
+    'Copie o arquivo .env.example para .env e configure suas credenciais do Supabase.'
+  );
+}
 
 // Criar cliente Supabase
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
