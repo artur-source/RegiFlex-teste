@@ -1,13 +1,23 @@
 # RegiFlex - Sistema de Gestão para Clínicas de Psicologia
 
-[![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow)](https://github.com/artur-source/RegiFlex-teste)
+[![Status](https://img.shields.io/badge/Status-Comercialização-brightgreen)](https://github.com/artur-source/RegiFlex-teste)
 [![Tecnologia](https://img.shields.io/badge/Frontend-React%2018.3.1-blue)](https://reactjs.org/)
 [![Backend](https://img.shields.io/badge/Backend-Supabase-green)](https://supabase.com/)
 [![Última Correção](https://img.shields.io/badge/Última%20Correção-2025--10--10-brightgreen)](./BUGFIXES.md)
 
 ## Sobre o Projeto
 
-O RegiFlex é um sistema moderno de gestão para clínicas de psicologia, desenvolvido com foco na simplicidade, segurança e eficiência. Utilizando tecnologias de ponta como React e Supabase, oferece uma solução completa para o gerenciamento de pacientes, sessões e operações administrativas.
+O RegiFlex é uma **solução SaaS completa** para gestão de clínicas de psicologia, desenvolvida com arquitetura **multi-tenant** e **provisionamento automatizado**. O sistema foi projetado para ser comercializado como uma startup de **custo zero**, utilizando serviços com planos gratuitos robustos.
+
+### 💰 Modelo de Negócio Validado
+- **Custo Operacional:** Apenas **R$ 3,33/mês** (domínio)
+- **Break-Even:** 1 cliente (R$ 34,90 > R$ 3,33)
+- **Planos:** Individual (R$ 34,90/mês) e Clínica (R$ 99,90/mês)
+- **Provisionamento:** 100% automatizado para novos clientes
+
+### 🔗 Links Importantes
+- **Página de Marketing:** [https://artur-source.github.io/RegiFlex/](https://artur-source.github.io/RegiFlex/)
+- **Contato Comercial:** regiflex.contato@gmail.com
 
 ## 🚀 Tecnologias Utilizadas
 
