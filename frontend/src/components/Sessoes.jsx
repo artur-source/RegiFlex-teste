@@ -193,7 +193,7 @@ const Sessoes = () => {
                 <select
                   id="paciente_id"
                   value={formData.paciente_id}
-                  onChange={(e) => setFormData({...formData, paciente_id: e.target.value ? parseInt(e.target.value) : null})
+                  onChange={(e) => setFormData({...formData, paciente_id: e.target.value ? parseInt(e.target.value) : null})}
                   required
                   disabled={formLoading}
                   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
