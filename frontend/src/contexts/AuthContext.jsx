@@ -1,88 +1,155 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import { supabase } from '../lib/supabaseClient'
 
-const AuthContext = createContext({});
+const AuthContext = createContext({})
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
+  const context = useContext(AuthContext)
   if (!context) {
-    throw new Error('useAuth deve ser usado dentro de um AuthProvider');
+    throw new Error('useAuth must be used within an AuthProvider')
   }
-  return context;
-};
+  return context
+}
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [session, setSession] = useState(null)
 
   useEffect(() => {
-    // Verificar se há usuário no localStorage
-    const savedUser = localStorage.getItem('regiflex_user');
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (error) {
-        console.error('Erro ao carregar usuário:', error);
-        localStorage.removeItem('regiflex_user');
+    // Verificar sessão existente
+    const getSession = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession()
+      if (error) {
+        console.error('Error getting session:', error)
+      } else {
+        setSession(session)
+        if (session?.user) {
+          await fetchUserProfile(session.user.id)
+        }
       }
+      setLoading(false)
     }
-    setLoading(false);
-  }, []);
 
-  const login = async (username, _password) => {
+    getSession()
+
+    // Escutar mudanças de autenticação
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setSession(session)
+        if (session?.user) {
+          await fetchUserProfile(session.user.id)
+        } else {
+          setUser(null)
+        }
+        setLoading(false)
+      }
+    )
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const fetchUserProfile = async (userId) => {
     try {
-      // Buscar usuário pelo username
-      const { data: usuarios, error: searchError } = await supabase
+      const { data, error } = await supabase
         .from('usuarios')
-        .select('*')
-        .eq('username', username)
-        .single();
+        .select('*, clinicas(*)')
+        .eq('auth_user_id', userId)
+        .single()
 
-      if (searchError || !usuarios) {
-        return { 
-          success: false, 
-          message: 'Usuário não encontrado' 
-        };
+      if (error) throw error
+      setUser(data)
+    } catch (error) {
+      console.error('Error fetching user profile:', error)
+    }
+  }
+
+  const login = async (email, password) => {
+    try {
+      setLoading(true)
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (error) throw error
+      return { success: true, data }
+    } catch (error) {
+      console.error('Login error:', error)
+      return { success: false, error: error.message }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const logout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut()
+      if (error) throw error
+      setUser(null)
+      setSession(null)
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
+  }
+
+  const signUp = async (email, password, userData) => {
+    try {
+      setLoading(true)
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      })
+
+      if (error) throw error
+
+      // Criar perfil do usuário
+      if (data.user) {
+        const { error: profileError } = await supabase
+          .from('usuarios')
+          .insert([
+            {
+              auth_user_id: data.user.id,
+              email: data.user.email,
+              ...userData,
+            },
+          ])
+
+        if (profileError) throw profileError
       }
 
-      // Por enquanto, aceitar qualquer senha para testes
-      // TODO: Implementar validação real de senha com bcrypt
-      const userData = {
-        id: usuarios.id,
-        username: usuarios.username,
-        email: usuarios.email,
-        role: usuarios.role
-      };
-
-      setUser(userData);
-      localStorage.setItem('regiflex_user', JSON.stringify(userData));
-
-      return { success: true };
+      return { success: true, data }
     } catch (error) {
-      console.error('Erro no login:', error);
-      return { 
-        success: false, 
-        message: 'Erro de conexão' 
-      };
+      console.error('SignUp error:', error)
+      return { success: false, error: error.message }
+    } finally {
+      setLoading(false)
     }
-  };
+  }
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('regiflex_user');
-  };
+  const resetPassword = async (email) => {
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      })
+      if (error) throw error
+      return { success: true }
+    } catch (error) {
+      console.error('Reset password error:', error)
+      return { success: false, error: error.message }
+    }
+  }
 
   const value = {
     user,
+    session,
     loading,
     login,
     logout,
-    isAuthenticated: !!user
-  };
+    signUp,
+    resetPassword,
+    isAuthenticated: !!session,
+  }
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+}

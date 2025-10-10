@@ -4,12 +4,12 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, User, Lock } from 'lucide-react';
+import { Loader2, Mail, Lock } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import regiflexLogo from '../assets/regiflex-logo.jpg';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -21,9 +21,9 @@ const Login = () => {
     setError('');
 
     try {
-      const result = await login(username, password);
+      const result = await login(email, password);
       if (!result.success) {
-        setError(result.message);
+        setError(result.error || 'Credenciais inválidas');
       }
     } catch (error) {
       setError('Erro de conexão. Tente novamente.');
@@ -61,15 +61,15 @@ const Login = () => {
             )}
             
             <div className="space-y-2">
-              <Label htmlFor="username">Usuário</Label>
+              <Label htmlFor="email">Email</Label>
               <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <Input
-                  id="username"
-                  type="text"
-                  placeholder="Digite seu usuário"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  id="email"
+                  type="email"
+                  placeholder="Digite seu email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="pl-10"
                   required
                   disabled={loading}
@@ -111,11 +111,11 @@ const Login = () => {
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-600">
-            <p>Credenciais de teste:</p>
-            <div className="mt-2 space-y-1 text-xs bg-gray-50 p-3 rounded">
-              <p><strong>Admin:</strong> admin / password</p>
-              <p><strong>Psicólogo:</strong> psicologo1 / password</p>
-              <p><strong>Recepcionista:</strong> recepcionista1 / password</p>
+            <p>Sistema de autenticação seguro com Supabase</p>
+            <div className="mt-2 text-xs bg-blue-50 p-3 rounded border border-blue-200">
+              <p className="text-blue-800">
+                <strong>Novo sistema:</strong> Use seu email e senha para acessar
+              </p>
             </div>
           </div>
         </CardContent>
@@ -125,4 +125,3 @@ const Login = () => {
 };
 
 export default Login;
-
