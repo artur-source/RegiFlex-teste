@@ -55,3 +55,23 @@ CREATE TABLE IF NOT EXISTS logs (
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+
+-- Tabela de Clínicas
+CREATE TABLE IF NOT EXISTS clinicas (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) UNIQUE NOT NULL,
+    admin_usuario_id INTEGER REFERENCES usuarios(id) UNIQUE,
+    stripe_customer_id VARCHAR(255) UNIQUE,
+    plano_atual VARCHAR(50) DEFAULT 'individual',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Adicionando clinica_id à tabela usuarios
+ALTER TABLE usuarios
+ADD COLUMN clinica_id INTEGER REFERENCES clinicas(id);
+
+-- Adicionando clinica_id à tabela pacientes
+ALTER TABLE pacientes
+ADD COLUMN clinica_id INTEGER REFERENCES clinicas(id);
+

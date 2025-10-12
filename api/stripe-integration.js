@@ -1,3 +1,4 @@
+
 import express from 'express';
 import stripeClient from './stripe-client.js';
 import { createClient } from '@supabase/supabase-js';
@@ -504,11 +505,9 @@ router.post('/create-coupon',
   logStripeAction('create-coupon'),
   async (req, res) => {
     try {
-      const couponData = req.body;
-
+      const { couponData } = req.body;
       const result = await stripeClient.createCoupon(couponData);
       res.json(result);
-
     } catch (error) {
       res.status(500).json({
         error: 'Erro ao criar cupom',
@@ -528,14 +527,11 @@ router.post('/apply-coupon',
   async (req, res) => {
     try {
       const { subscription_id, coupon_id } = req.body;
-
       const result = await stripeClient.applyCouponToSubscription(
         subscription_id, 
         coupon_id
       );
-
       res.json(result);
-
     } catch (error) {
       res.status(500).json({
         error: 'Erro ao aplicar cupom',
@@ -557,19 +553,15 @@ router.get('/reports/revenue',
   async (req, res) => {
     try {
       const { start_date, end_date } = req.query;
-
       if (!start_date || !end_date) {
         return res.status(400).json({
           error: 'start_date e end_date são obrigatórios'
         });
       }
-
       const startDate = new Date(start_date);
       const endDate = new Date(end_date);
-
       const result = await stripeClient.getRevenueReport(startDate, endDate);
       res.json(result);
-
     } catch (error) {
       res.status(500).json({
         error: 'Erro ao gerar relatório',
@@ -590,7 +582,6 @@ router.get('/reports/subscriptions',
     try {
       const result = await stripeClient.getSubscriptionStats();
       res.json(result);
-
     } catch (error) {
       res.status(500).json({
         error: 'Erro ao gerar estatísticas',
@@ -611,7 +602,6 @@ router.post('/webhook',
   async (req, res) => {
     try {
       const signature = req.headers['stripe-signature'];
-
       // Verificar webhook
       const verification = stripeClient.verifyWebhook(req.body, signature);
       
@@ -619,21 +609,16 @@ router.post('/webhook',
         console.error('Webhook verification failed:', verification.error);
         return res.status(400).json({ error: 'Webhook verification failed' });
       }
-
       const event = verification.event;
       
       console.log(`[Stripe Webhook] Received: ${event.type}`);
-
       // Processar evento
       const result = await stripeClient.processWebhookEvent(event);
-
       if (result.success) {
         // Atualizar dados no Supabase baseado na ação
         await updateSupabaseFromWebhook(result, event);
       }
-
       res.json({ received: true, processed: result.success });
-
     } catch (error) {
       console.error('Webhook processing error:', error);
       res.status(500).json({ error: 'Webhook processing failed' });
@@ -651,30 +636,44 @@ async function updateSupabaseFromWebhook(result, event) {
     const { action } = result;
     const object = event.data.object;
 
-    switch (action) {
-      case 'activate_clinic':
+    switch (event.type) {
+      case 'customer.subscription.created':
+      case 'customer.subscription.updated':
+        const clinicId = object.metadata.clinic_id;
+        const clinicName = object.metadata.clinic_name;
+        const product = object.items.data[0].price.product;
+        let planType = 'individual';
+        if (product === process.env.STRIPE_PRODUCT_CLINICA_ID) {
+          planType = 'clinica';
+        }
+
         await supabase
           .from('clinicas')
-          .update({
-            status: 'active',
-            subscription_status: object.status,
-            activated_at: new Date().toISOString()
-          })
-          .eq('stripe_customer_id', object.customer);
-        break;
+          .update({ plano_atual: planType, subscription_status: object.status })
+          .eq('id', clinicId);
 
-      case 'deactivate_clinic':
+        if (event.type === 'customer.subscription.created' && clinicId && clinicName) {
+          const { data: existingAdmin, error: adminError } = await supabase
+            .from('usuarios')
+            .select('id')
+            .eq('clinica_id', clinicId)
+            .eq('role', 'admin')
+            .single();
+
+          if (adminError && adminError.code === 'PGRST116') {
+            await createClinicAdmin(clinicId, clinicName);
+          } else if (adminError) {
+            console.error('Erro ao verificar admin existente:', adminError);
+          }
+        }
+        break;
+      case 'customer.subscription.deleted':
         await supabase
           .from('clinicas')
-          .update({
-            status: 'inactive',
-            subscription_status: 'cancelled',
-            deactivated_at: new Date().toISOString()
-          })
+          .update({ plano_atual: 'cancelado', subscription_status: object.status })
           .eq('stripe_customer_id', object.customer);
         break;
-
-      case 'payment_success':
+      case 'invoice.payment_succeeded':
         await supabase
           .from('clinicas')
           .update({
@@ -684,8 +683,7 @@ async function updateSupabaseFromWebhook(result, event) {
           })
           .eq('stripe_customer_id', object.customer);
         break;
-
-      case 'payment_failed':
+      case 'invoice.payment_failed':
         await supabase
           .from('clinicas')
           .update({
@@ -706,10 +704,52 @@ async function updateSupabaseFromWebhook(result, event) {
         object_id: object.id,
         created_at: new Date().toISOString()
       });
-
   } catch (error) {
     console.error('Error updating Supabase from webhook:', error);
   }
 }
 
+async function createClinicAdmin(clinicId, clinicName) {
+  try {
+    const adminEmail = `admin@${clinicName.toLowerCase().replace(/\s/g, ".")}.regiflex`;
+    const adminPassword = 'password@123';
+
+    // Criar usuário no Supabase Auth
+    const { data: userAuth, error: authError } = await supabase.auth.signUp({
+      email: adminEmail,
+      password: adminPassword,
+    });
+
+    if (authError) {
+      console.error("Erro ao criar usuário admin no Supabase Auth:", authError);
+      return { success: false, error: authError.message };
+    }
+
+    // Inserir usuário na tabela 'usuarios' com role 'admin'
+    const { data: userProfile, error: profileError } = await supabase
+      .from("usuarios")
+      .insert([
+        {
+          id: userAuth.user.id,
+          username: `admin_${clinicName.toLowerCase().replace(/\s/g, "")}`,
+          email: adminEmail,
+          role: "admin",
+          clinica_id: clinicId,
+        },
+      ]);
+
+    if (profileError) {
+      console.error("Erro ao inserir perfil de usuário admin:", profileError);
+      return { success: false, error: profileError.message };
+    }
+
+    console.log(`Admin ${adminEmail} criado para a clínica ${clinicName}`);
+    return { success: true, user: userAuth.user };
+  } catch (error) {
+    console.error("Erro inesperado ao criar admin da clínica:", error);
+    return { success: false, error: error.message };
+  }
+}
+
 export default router;
+
