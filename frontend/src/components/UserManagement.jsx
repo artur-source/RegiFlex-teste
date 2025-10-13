@@ -8,6 +8,7 @@ const UserManagement = () => {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
+  const [userLimit, setUserLimit] = useState(null)
   const [editingUser, setEditingUser] = useState(null)
   const [formData, setFormData] = useState({
     username: '',
@@ -20,8 +21,23 @@ const UserManagement = () => {
   useEffect(() => {
     if (user?.role === 'admin') {
       fetchUsers()
+      fetchPlanDetails()
     }
   }, [user])
+
+  const fetchPlanDetails = async () => {
+    if (user?.clinicas?.plano_atual) {
+      // Para o plano 'Individual', o limite é 100. Para 'Clinica', é ilimitado (null ou Infinity).
+      const planName = user.clinicas.plano_atual.toLowerCase(); // 'individual' ou 'clinica'
+      if (planName === 'individual') {
+        setUserLimit(100);
+      } else if (planName === 'clinica') {
+        setUserLimit(Infinity); // Plano Clínica tem usuários ilimitados
+      } else {
+        setUserLimit(null); // Plano desconhecido ou sem limite definido
+      }
+    }
+  };
 
   const fetchUsers = async () => {
     try {
@@ -45,6 +61,12 @@ const UserManagement = () => {
     setLoading(true)
 
     try {
+      if (!editingUser && userLimit !== null && users.length >= userLimit) {
+        alert(`Você atingiu o limite de ${userLimit} usuários para o seu plano.`);
+        setLoading(false);
+        return;
+      }
+
       if (editingUser) {
         // Atualizar usuário existente
         const { error } = await supabase
@@ -145,11 +167,15 @@ const UserManagement = () => {
         <h1 className="text-2xl font-bold">Gerenciamento de Usuários</h1>
         <button
           onClick={() => setShowModal(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-colors"
+          className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${userLimit !== null && users.length >= userLimit ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+          disabled={userLimit !== null && users.length >= userLimit}
         >
           <Plus size={20} />
           Novo Usuário
         </button>
+        {userLimit !== null && users.length >= userLimit && (
+          <p className="text-red-500 text-sm ml-4">Limite de usuários atingido para o seu plano ({userLimit}).</p>
+        )}
       </div>
 
       {loading ? (
