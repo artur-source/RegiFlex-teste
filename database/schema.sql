@@ -75,3 +75,39 @@ ADD COLUMN clinica_id INTEGER REFERENCES clinicas(id);
 ALTER TABLE pacientes
 ADD COLUMN clinica_id INTEGER REFERENCES clinicas(id);
 
+
+
+-- Habilitar RLS para tabelas relevantes
+ALTER TABLE usuarios ENABLE ROW LEVEL SECURITY;
+ALTER TABLE pacientes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE sessoes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE evolucao ENABLE ROW LEVEL SECURITY;
+ALTER TABLE logs ENABLE ROW LEVEL SECURITY;
+
+-- Política RLS para a tabela 'usuarios': Usuários só podem ver e modificar usuários da sua própria clínica
+CREATE POLICY "Users can view their own clinic users" ON usuarios FOR SELECT USING (clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid()));
+CREATE POLICY "Users can modify their own clinic users" ON usuarios FOR UPDATE USING (clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid()));
+CREATE POLICY "Users can insert their own clinic users" ON usuarios FOR INSERT WITH CHECK (clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid()));
+CREATE POLICY "Users can delete their own clinic users" ON usuarios FOR DELETE USING (clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid()));
+
+-- Política RLS para a tabela 'pacientes': Usuários só podem ver e modificar pacientes da sua própria clínica
+CREATE POLICY "Users can view their own clinic patients" ON pacientes FOR SELECT USING (clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid()));
+CREATE POLICY "Users can modify their own clinic patients" ON pacientes FOR UPDATE USING (clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid()));
+CREATE POLICY "Users can insert their own clinic patients" ON pacientes FOR INSERT WITH CHECK (clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid()));
+CREATE POLICY "Users can delete their own clinic patients" ON pacientes FOR DELETE USING (clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid()));
+
+-- Política RLS para a tabela 'sessoes': Usuários só podem ver e modificar sessões de pacientes da sua própria clínica
+CREATE POLICY "Users can view their own clinic sessions" ON sessoes FOR SELECT USING (paciente_id IN (SELECT id FROM pacientes WHERE clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid())));
+CREATE POLICY "Users can modify their own clinic sessions" ON sessoes FOR UPDATE USING (paciente_id IN (SELECT id FROM pacientes WHERE clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid())));
+CREATE POLICY "Users can insert their own clinic sessions" ON sessoes FOR INSERT WITH CHECK (paciente_id IN (SELECT id FROM pacientes WHERE clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid())));
+CREATE POLICY "Users can delete their own clinic sessions" ON sessoes FOR DELETE USING (paciente_id IN (SELECT id FROM pacientes WHERE clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid())));
+
+-- Política RLS para a tabela 'evolucao': Usuários só podem ver e modificar evoluções de sessões de pacientes da sua própria clínica
+CREATE POLICY "Users can view their own clinic evolutions" ON evolucao FOR SELECT USING (sessao_id IN (SELECT id FROM sessoes WHERE paciente_id IN (SELECT id FROM pacientes WHERE clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid()))));
+CREATE POLICY "Users can modify their own clinic evolutions" ON evolucao FOR UPDATE USING (sessao_id IN (SELECT id FROM sessoes WHERE paciente_id IN (SELECT id FROM pacientes WHERE clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid()))));
+CREATE POLICY "Users can insert their own clinic evolutions" ON evolucao FOR INSERT WITH CHECK (sessao_id IN (SELECT id FROM sessoes WHERE paciente_id IN (SELECT id FROM pacientes WHERE clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid()))));
+CREATE POLICY "Users can delete their own clinic evolutions" ON evolucao FOR DELETE USING (sessao_id IN (SELECT id FROM sessoes WHERE paciente_id IN (SELECT id FROM pacientes WHERE clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid()))));
+
+-- Política RLS para a tabela 'logs': Usuários só podem ver logs da sua própria clínica
+CREATE POLICY "Users can view their own clinic logs" ON logs FOR SELECT USING (usuario_id IN (SELECT id FROM usuarios WHERE clinica_id = (SELECT clinica_id FROM usuarios WHERE auth_user_id = auth.uid())));
+
