@@ -7,6 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: './',
   plugins: [react()],
   resolve: {
     alias: {
@@ -38,7 +39,10 @@ export default defineConfig({
     minify: 'esbuild'
   },
   preview: {
+
+    host: '0.0.0.0',
     port: 4173,
-    strictPort: true
+    strictPort: true,
+    allowedHosts: ["4173-ip28tdo9co51zvkhsqeqi-790051a5.manusvm.computer"]
   }
 })

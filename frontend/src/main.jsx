@@ -5,12 +5,15 @@ import App from './App.jsx';
 
 const rootElement = document.getElementById('root');
 
-if (rootElement) {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
+try {
+  if (rootElement) {
+    ReactDOM.createRoot(rootElement).render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+  }
+} catch (err) {
+  document.body.innerHTML = `<pre>${err.message}\n${err.stack}</pre>`;
 }
 

@@ -12,6 +12,9 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 // Criar cliente Supabase
+console.log('VITE_SUPABASE_URL:', supabaseUrl);
+console.log('VITE_SUPABASE_ANON_KEY:', supabaseAnonKey);
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
