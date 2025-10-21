@@ -712,7 +712,7 @@ async function updateSupabaseFromWebhook(result, event) {
 async function createClinicAdmin(clinicId, clinicName) {
   try {
     const adminEmail = `admin@${clinicName.toLowerCase().replace(/\s/g, ".")}.regiflex`;
-    const adminPassword = 'password@123';
+        const adminPassword = provisioningService.generateTempPassword();
 
     // Criar usuário no Supabase Auth
     const { data: userAuth, error: authError } = await supabase.auth.signUp({
