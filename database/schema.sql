@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS usuarios (
     email VARCHAR(120) UNIQUE NOT NULL,
     password_hash VARCHAR(128) NOT NULL,
     role VARCHAR(20) NOT NULL DEFAULT 'psicologo', -- admin, psicologo, recepcionista
+    plano_atual VARCHAR(50) DEFAULT 'individual',
+    stripe_customer_id VARCHAR(255) UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -64,6 +66,7 @@ CREATE TABLE IF NOT EXISTS clinicas (
     admin_usuario_id INTEGER REFERENCES usuarios(id) UNIQUE,
     stripe_customer_id VARCHAR(255) UNIQUE,
     plano_atual VARCHAR(50) DEFAULT 'individual',
+    limite_pacientes INTEGER DEFAULT 100,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

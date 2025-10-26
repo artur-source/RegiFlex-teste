@@ -53,7 +53,10 @@ class SupabaseApiService {
       // Buscar dados adicionais do usuário na tabela usuarios
       const { data: userData, error: userError } = await supabase
         .from('usuarios')
-        .select('*')
+        .select(`
+          *,
+          clinica:clinicas(limite_pacientes)
+        `)
         .eq('email', user.email)
         .single();
 
@@ -64,7 +67,10 @@ class SupabaseApiService {
           id: userData.id,
           username: userData.username,
           email: userData.email,
-          role: userData.role
+          role: userData.role,
+          plano_atual: userData.plano_atual,
+          stripe_customer_id: userData.stripe_customer_id,
+          limite_pacientes: userData.clinica.limite_pacientes
         }
       };
     } catch (error) {
@@ -118,12 +124,39 @@ class SupabaseApiService {
 
   async createPaciente(pacienteData) {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      const { data: userData, error: userError } = await supabase
+        .from("usuarios")
+        .select(`
+          *,
+          clinica:clinicas(id, limite_pacientes)
+        `)
+        .eq("email", user.email)
+        .single();
+
+      if (userError) throw userError;
+
+      // Verificação do limite de pacientes apenas para o plano 'individual'
+      if (userData.plano_atual === 'individual') {
+        const { count: currentPatientsCount, error: countError } = await supabase
+          .from("pacientes")
+          .select("*", { count: "exact", head: true })
+          .eq("clinica_id", userData.clinica.id);
+
+        if (countError) throw countError;
+
+        if (currentPatientsCount >= userData.clinica.limite_pacientes) {
+          throw new Error("Limite de pacientes atingido para o plano Individual. Faça upgrade para o plano Clínica para adicionar mais pacientes.");
+        }
+      }
+
       // Gerar QR code data único
       const qrCodeData = `PAC-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       
       const { data, error } = await supabase
         .from('pacientes')
-        .insert([{ ...pacienteData, qr_code_data: qrCodeData }])
+        .insert([{ ...pacienteData, qr_code_data: qrCodeData, clinica_id: userData.clinica.id }])
         .select()
         .single();
 
