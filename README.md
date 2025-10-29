@@ -59,36 +59,44 @@ O RegiFlex é uma **solução SaaS completa** para gestão de clínicas de psico
 1. **Clone o repositório**
    ```bash
    git clone https://github.com/artur-source/RegiFlex-teste.git
-   cd RegiFlex-teste/frontend
+   cd RegiFlex-teste
    ```
 
-2. **Instale as dependências**
+2. **Instale as dependências (Frontend)**
    ```bash
-   npm install
+   cd frontend && npm install && cd ..
    ```
 
-3. **Configure as variáveis de ambiente**
+3. **Configure as variáveis de ambiente (Frontend)**
    ```bash
-   cp .env.example .env
+   cp frontend/.env.example frontend/.env
    ```
    
-   Edite o arquivo `.env` com suas credenciais do Supabase:
+   Edite o arquivo `frontend/.env` com suas credenciais do Supabase:
    ```env
    VITE_SUPABASE_URL=sua_url_do_supabase
    VITE_SUPABASE_ANON_KEY=sua_chave_anonima_do_supabase
    ```
 
-4. **Execute o projeto**
+4. **Configure o Banco de Dados (Supabase)**
    ```bash
+   - Crie um novo projeto no Supabase.
+- No seu projeto Supabase, vá em **SQL Editor** e execute o script `supabase/schema.sql` para criar a estrutura de tabelas, RLS e dados de teste.
+- **Importante:** O script `schema.sql` inclui um `tenant_id` de teste ('00000000-0000-0000-0000-000000000001'). Para testar o login, você precisará criar um usuário de teste no Supabase Auth (ex: `admin@regiflex.com` com a senha `password`) e garantir que o `id` deste usuário esteja associado ao `tenant_id` de teste na tabela `profiles`.
+
+5. **Execute o projeto (Frontend)**
+   ```bash
+   cd frontend
    npm run dev
    ```
+   ```
 
-5. **Acesse o sistema**
-   - URL: `http://localhost:5173`
+6. **Acesse o sistema**
+   - URL: `http://localhost:5173` (ou a porta indicada pelo Vite)
    - Credenciais de teste:
-     - **Admin:** admin / password
-     - **Psicólogo:** psicologo1 / password
-     - **Recepcionista:** recepcionista1 / password
+     - **Admin:** admin@regiflex.com / password (após configurar o usuário no Supabase Auth)
+     - **Psicólogo:** psicologo1@regiflex.com / password (após configurar o usuário no Supabase Auth)
+     - **Recepcionista:** recepcionista1@regiflex.com / password (após configurar o usuário no Supabase Auth)
 
 ## 🔧 Correções Recentes
 
