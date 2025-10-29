@@ -25,7 +25,7 @@ const Layout = ({ children, currentPage, onNavigate }) => {
     { id: 'pacientes', label: 'Pacientes', icon: Users },
     { id: 'sessoes', label: 'Sessões', icon: Calendar },
     { id: 'qr', label: 'QR Code', icon: QrCode },
-    { id: 'relatorios', label: 'Relatórios', icon: FileText },
+    { id: 'relatorios', label: 'Relatórios Inteligentes', icon: FileText },
     { id: 'ia', label: 'IA & Alertas', icon: Brain },
     { id: 'integracoes', label: 'Integrações', icon: Settings },
   ];

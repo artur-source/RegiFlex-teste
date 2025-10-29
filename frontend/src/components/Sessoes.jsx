@@ -7,6 +7,8 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast'; // Adicionado para feedback de IA
+import FeedbackIA from './FeedbackIA';
 
 import { 
   Plus, 
@@ -22,6 +24,7 @@ import {
   FileText
 } from 'lucide-react';
 import apiService from '../services/api';
+import LoadingSpinner from './ui/LoadingSpinner';
 
 const Sessoes = () => {
   const [sessoes, setSessoes] = useState([]);
@@ -38,6 +41,8 @@ const Sessoes = () => {
   });
   const [formLoading, setFormLoading] = useState(false);
   const [error, setError] = useState('');
+	  const [iaAlert, setIaAlert] = useState({ loading: false, sessaoId: null, showFeedback: false, alertMessage: '' }); // Novo estado para o alerta de IA
+  const { toast } = useToast(); // Hook para exibir notificações
   const [filters, setFilters] = useState({
     status: '',
     paciente_id: ''
@@ -58,6 +63,42 @@ const Sessoes = () => {
       console.error('Erro:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleIaPrediction = async (sessaoId) => {
+    setIaAlert({ loading: true, sessaoId: sessaoId });
+    try {
+      const result = await apiService.predictNoShow(sessaoId);
+      
+	      setIaAlert({
+	        loading: false,
+	        sessaoId: sessaoId,
+	        message: result.alert_message,
+	        isHighRisk: result.is_high_risk,
+	        risk: result.risk_percentage,
+	        showFeedback: true,
+	        alertMessage: result.alert_message
+	      });
+      
+	      toast({
+	        title: "Alerta de IA",
+	        description: result.alert_message,
+	        variant: result.is_high_risk ? "destructive" : "default"
+	      });
+
+	      // Exibir o botão de feedback após a predição
+
+
+    } catch (error) {
+      console.error("Erro na predição de IA:", error);
+      setIaAlert({
+        loading: false,
+        sessaoId: sessaoId,
+        message: "Erro ao consultar IA. Verifique o console.",
+        isHighRisk: false,
+        risk: 0
+      });
     }
   };
 
@@ -161,14 +202,14 @@ const Sessoes = () => {
         </div>
         
         <Dialog open={showForm} onOpenChange={setShowForm}>
-          <DialogTrigger asChild>
-            <Button 
-              className="bg-blue-600 hover:bg-blue-700"
-              onClick={() => {
-                setSelectedSessao(null);
-                resetForm();
-              }}
-            >
+	          <DialogTrigger asChild>
+	            <Button 
+	              className="bg-blue-600 hover:bg-blue-700"
+	              onClick={() => {
+	                setSelectedSessao(null);
+	                resetForm();
+	              }}
+	            >
               <Plus className="mr-2 h-4 w-4" />
               Nova Sessão
             </Button>
@@ -329,22 +370,10 @@ const Sessoes = () => {
         </Alert>
       )}
 
-      {/* Sessões List */}
-      {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[...Array(6)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <CardContent className="p-4">
-                <div className="space-y-3">
-                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                  <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                  <div className="h-3 bg-gray-200 rounded w-2/3"></div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : sessoes.length > 0 ? (
+	      {/* Sessões List */}
+	      {loading ? (
+            <LoadingSpinner text="Carregando Sessões..." className="py-20" />
+	      ) : sessoes.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {sessoes.map((sessao) => (
             <Card key={sessao.id} className="hover:shadow-md transition-shadow">
@@ -388,18 +417,35 @@ const Sessoes = () => {
                   )}
                 </div>
                 
-                <div className="flex justify-between items-center mt-4 pt-3 border-t">
-                  <div className="flex space-x-1">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleEdit(sessao)}
-                    >
-                      <Edit className="h-3 w-3" />
-                    </Button>
-                  </div>
-                  
-                  <div className="flex space-x-1">
+		                <div className="flex justify-between items-center mt-4 pt-3 border-t">
+		                  <div className="flex items-center space-x-1">
+		                        <Button
+		                          size="sm"
+		                          variant="outline"
+		                          onClick={() => handleEdit(sessao)}
+		                        >
+		                          <Edit className="h-3 w-3" />
+		                        </Button>
+		                        <Button
+		                          size="sm"
+		                          variant="ghost"
+		                          className="text-yellow-600 hover:text-yellow-700"
+		                          onClick={() => handleIaPrediction(sessao.id)}
+		                          disabled={iaAlert.loading && iaAlert.sessaoId === sessao.id}
+		                          title="Verificar Risco de No-Show (IA)"
+		                        >
+		                          {iaAlert.loading && iaAlert.sessaoId === sessao.id ? (
+		                            <Loader2 className="h-3 w-3 animate-spin" />
+		                          ) : (
+		                            <AlertTriangle className="h-3 w-3" />
+		                          )}
+		                        </Button>
+		                        {iaAlert.sessaoId === sessao.id && iaAlert.showFeedback && (
+		                          <FeedbackIA sessaoId={sessao.id} alertaMessage={iaAlert.alertMessage} />
+		                        )}
+				                  </div>
+	                  
+	                  <div className="flex space-x-1">
                     {sessao.status === 'agendada' && (
                       <>
                         <Button 

@@ -19,6 +19,7 @@ import {
   Loader2
 } from 'lucide-react';
 import apiService from '../services/api';
+import LoadingSpinner from './ui/LoadingSpinner';
 
 const Pacientes = () => {
   const [pacientes, setPacientes] = useState([]);
@@ -136,10 +137,17 @@ const Pacientes = () => {
     return new Date(dateString).toLocaleDateString('pt-BR');
   };
 
-  const formatCPF = (cpf) => {
-    if (!cpf) return '-';
-    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-  };
+	  const formatCPF = (cpf, mask = true) => {
+	    if (!cpf) return '-';
+	    const formatted = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+	    
+	    if (mask) {
+	      // Mascara os 6 dígitos do meio
+	      return formatted.replace(/(\d{3}\.)(\d{3}\.)(\d{3})(-\d{2})/, '$1***.***$4');
+	    }
+	    
+	    return formatted;
+	  };
 
   const filteredPacientes = pacientes.filter(paciente =>
     paciente.nome_completo.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -299,22 +307,10 @@ const Pacientes = () => {
         </Alert>
       )}
 
-      {/* Pacientes List */}
-      {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[...Array(6)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <CardContent className="p-4">
-                <div className="space-y-3">
-                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                  <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                  <div className="h-3 bg-gray-200 rounded w-2/3"></div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : filteredPacientes.length > 0 ? (
+	      {/* Pacientes List */}
+	      {loading ? (
+            <LoadingSpinner text="Carregando Pacientes..." className="py-20" />
+	      ) : filteredPacientes.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredPacientes.map((paciente) => (
             <Card key={paciente.id} className="hover:shadow-md transition-shadow">
@@ -335,12 +331,20 @@ const Pacientes = () => {
               
               <CardContent className="pt-0">
                 <div className="space-y-2 text-sm text-gray-600">
-                  {paciente.cpf && (
-                    <div className="flex items-center">
-                      <span className="font-medium w-12">CPF:</span>
-                      <span>{formatCPF(paciente.cpf)}</span>
-                    </div>
-                  )}
+	                  {paciente.cpf && (
+	                    <div className="flex items-center">
+	                      <span className="font-medium w-12">CPF:</span>
+	                      <span>{formatCPF(paciente.cpf)}</span>
+	                      <span className="ml-2 text-xs text-gray-400 hover:text-gray-600 cursor-pointer"
+	                        onClick={(e) => {
+	                          e.stopPropagation();
+	                          alert(`CPF Completo: ${formatCPF(paciente.cpf, false)}`);
+	                        }}
+	                      >
+	                        (Mostrar)
+	                      </span>
+	                    </div>
+	                  )}
                   
                   {paciente.telefone && (
                     <div className="flex items-center">

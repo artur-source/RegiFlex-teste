@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Login from './components/Login';
 import Layout from './components/Layout';
+import { Toaster } from "@/components/ui/toaster";
 import Dashboard from './components/Dashboard';
 import Pacientes from './components/Pacientes';
 import Sessoes from './components/Sessoes';
 import QRCodeComponent from './components/QRCode';
 import IA from './components/IA';
+import Relatorios from './components/Relatorios';
 import Integracoes from './components/Integracoes';
 import './App.css';
 
@@ -47,7 +49,7 @@ const AppContent = () => {
       case 'qr':
         return <QRCodeComponent />;
       case 'relatorios':
-        return <ComingSoon title="Relatórios" />;
+        return <Relatorios />;
       case 'ia':
         return <IA />;
       case 'integracoes':
@@ -70,6 +72,7 @@ function App() {
   return (
     <AuthProvider>
       <AppContent />
+      <Toaster />
     </AuthProvider>
   );
 }

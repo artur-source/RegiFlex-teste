@@ -15,8 +15,34 @@ import {
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import apiService from '../services/api';
+import LoadingSpinner from './ui/LoadingSpinner';
+import DashboardSettings from './DashboardSettings';
 
 const Dashboard = () => {
+  const DEFAULT_CARDS = {
+    estatisticas: true,
+    alertas: true,
+    proximas_sessoes: true,
+    sessoes_por_status: true,
+    sessoes_por_dia: true,
+  };
+
+  const [visibleCards, setVisibleCards] = useState(() => {
+    const saved = localStorage.getItem('dashboardPreferences');
+    if (saved) {
+      return { ...DEFAULT_CARDS, ...JSON.parse(saved) };
+    }
+    return DEFAULT_CARDS;
+  });
+
+  const toggleCardVisibility = (cardId) => {
+    setVisibleCards(prev => {
+      const newCards = { ...prev, [cardId]: !prev[cardId] };
+      localStorage.setItem('dashboardPreferences', JSON.stringify(newCards));
+      return newCards;
+    });
+  };
+
   const [dashboardData, setDashboardData] = useState(null);
   const [alertas, setAlertas] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -75,22 +101,11 @@ const Dashboard = () => {
     });
   };
 
-  if (loading) {
-    return (
-      <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[...Array(4)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <CardContent className="p-6">
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                <div className="h-8 bg-gray-200 rounded w-1/2"></div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-    );
-  }
+	  if (loading) {
+	    return (
+	      <LoadingSpinner text="Carregando Dashboard..." className="py-20" />
+	    );
+	  }
 
   if (error) {
     return (
@@ -103,216 +118,221 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Estatísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Total de Pacientes</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {dashboardData?.estatisticas?.total_pacientes || 0}
-                </p>
-              </div>
-              <div className="gradient-regiflex rounded-full p-3">
-                <Users className="h-8 w-8 text-white" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Sessões Hoje</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {dashboardData?.estatisticas?.sessoes_hoje || 0}
-                </p>
-              </div>
-              <div className="gradient-regiflex rounded-full p-3">
-                <Calendar className="h-8 w-8 text-white" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Sessões esta Semana</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {dashboardData?.estatisticas?.sessoes_semana || 0}
-                </p>
-              </div>
-              <div className="gradient-regiflex rounded-full p-3">
-                <CalendarCheck className="h-8 w-8 text-white" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Sessões este Mês</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {dashboardData?.estatisticas?.sessoes_mes || 0}
-                </p>
-              </div>
-              <div className="gradient-regiflex rounded-full p-3">
-                <TrendingUp className="h-8 w-8 text-white" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="flex justify-end">
+        <DashboardSettings visibleCards={visibleCards} toggleCardVisibility={toggleCardVisibility} />
       </div>
 
+      {visibleCards.estatisticas && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Total de Pacientes</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {dashboardData?.estatisticas?.total_pacientes || 0}
+                  </p>
+                </div>
+                <div className="gradient-regiflex rounded-full p-3">
+                  <Users className="h-8 w-8 text-white" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Sessões Hoje</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {dashboardData?.estatisticas?.sessoes_hoje || 0}
+                  </p>
+                </div>
+                <div className="gradient-regiflex rounded-full p-3">
+                  <Calendar className="h-8 w-8 text-white" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Sessões esta Semana</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {dashboardData?.estatisticas?.sessoes_semana || 0}
+                  </p>
+                </div>
+                <div className="gradient-regiflex rounded-full p-3">
+                  <CalendarCheck className="h-8 w-8 text-white" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Sessões este Mês</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {dashboardData?.estatisticas?.sessoes_mes || 0}
+                  </p>
+                </div>
+                <div className="gradient-regiflex rounded-full p-3">
+                  <TrendingUp className="h-8 w-8 text-white" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Alertas de IA */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <AlertTriangle className="mr-2 h-5 w-5" />
-              Alertas Inteligentes
-            </CardTitle>
-            <CardDescription>
-              Insights gerados pela análise de dados
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {alertas.length > 0 ? (
-              <div className="space-y-3">
-                {alertas.map((alerta, index) => (
-                  <div key={index} className="p-3 border rounded-lg">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2 mb-1">
-                          <h4 className="font-medium text-sm">{alerta.titulo}</h4>
-                          <Badge className={getSeverityColor(alerta.severidade)}>
-                            {alerta.severidade}
-                          </Badge>
+        {visibleCards.alertas && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <AlertTriangle className="mr-2 h-5 w-5" />
+                Alertas Inteligentes
+              </CardTitle>
+              <CardDescription>
+                Insights gerados pela análise de dados
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {alertas.length > 0 ? (
+                <div className="space-y-3">
+                  {alertas.map((alerta, index) => (
+                    <div key={index} className="p-3 border rounded-lg">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h4 className="font-medium text-sm">{alerta.titulo}</h4>
+                            <Badge className={getSeverityColor(alerta.severidade)}>
+                              {alerta.severidade}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-gray-600 mb-2">{alerta.mensagem}</p>
+                          {alerta.acao && (
+                            <p className="text-xs text-blue-600 font-medium">
+                              💡 {alerta.acao}
+                            </p>
+                          )}
                         </div>
-                        <p className="text-sm text-gray-600 mb-2">{alerta.mensagem}</p>
-                        {alerta.acao && (
-                          <p className="text-xs text-blue-600 font-medium">
-                            💡 {alerta.acao}
-                          </p>
-                        )}
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-gray-500 text-center py-4">
-                Nenhum alerta no momento
-              </p>
-            )}
-          </CardContent>
-        </Card>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500 text-center py-4">
+                  Nenhum alerta no momento
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        )}
 
-        {/* Próximas Sessões */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Próximas Sessões</CardTitle>
-            <CardDescription>
-              Sessões agendadas para os próximos 7 dias
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {dashboardData?.proximas_sessoes?.length > 0 ? (
-              <div className="space-y-3">
-                {dashboardData.proximas_sessoes.map((sessao) => (
-                  <div key={sessao.id} className="flex items-center space-x-3 p-3 border rounded-lg">
-                    {getStatusIcon(sessao.status)}
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm truncate">
-                        {sessao.paciente?.nome_completo}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {formatDate(sessao.data_hora)} • {sessao.duracao_minutos}min
-                      </p>
+        {visibleCards.proximas_sessoes && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Próximas Sessões</CardTitle>
+              <CardDescription>
+                Sessões agendadas para os próximos 7 dias
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {dashboardData?.proximas_sessoes?.length > 0 ? (
+                <div className="space-y-3">
+                  {dashboardData.proximas_sessoes.map((sessao) => (
+                    <div key={sessao.id} className="flex items-center space-x-3 p-3 border rounded-lg">
+                      {getStatusIcon(sessao.status)}
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm truncate">
+                          {sessao.paciente?.nome_completo}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {formatDate(sessao.data_hora)} • {sessao.duracao_minutos}min
+                        </p>
+                      </div>
+                      <Badge variant="outline">
+                        {sessao.status}
+                      </Badge>
                     </div>
-                    <Badge variant="outline">
-                      {sessao.status}
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-gray-500 text-center py-4">
-                Nenhuma sessão agendada
-              </p>
-            )}
-          </CardContent>
-        </Card>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500 text-center py-4">
+                  Nenhuma sessão agendada
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        )}
       </div>
 
-      {/* Gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Sessões por Status */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Sessões por Status (Este Mês)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {dashboardData?.sessoes_por_status?.length > 0 ? (
-              <ResponsiveContainer width="100%" height={200}>
-                <BarChart data={dashboardData.sessoes_por_status}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="status" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="count" fill="url(#colorGradient)" />
-                  <defs>
-                    <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#2563EB" />
-                      <stop offset="50%" stopColor="#14B8A6" />
-                      <stop offset="100%" stopColor="#10B981" />
-                    </linearGradient>
-                  </defs>
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <p className="text-sm text-gray-500 text-center py-8">
-                Dados insuficientes para o gráfico
-              </p>
-            )}
-          </CardContent>
-        </Card>
+        {visibleCards.sessoes_por_status && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Sessões por Status (Este Mês)</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {dashboardData?.sessoes_por_status?.length > 0 ? (
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={dashboardData.sessoes_por_status}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="status" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="url(#colorGradient)" />
+                    <defs>
+                      <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#2563EB" />
+                        <stop offset="50%" stopColor="#14B8A6" />
+                        <stop offset="100%" stopColor="#10B981" />
+                      </linearGradient>
+                    </defs>
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <p className="text-sm text-gray-500 text-center py-8">
+                  Dados insuficientes para o gráfico
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        )}
 
-        {/* Sessões por Dia da Semana */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Sessões por Dia da Semana</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {dashboardData?.sessoes_por_dia?.length > 0 ? (
-              <ResponsiveContainer width="100%" height={200}>
-                <BarChart data={dashboardData.sessoes_por_dia}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="dia" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="count" fill="url(#colorGradient2)" />
-                  <defs>
-                    <linearGradient id="colorGradient2" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#14B8A6" />
-                      <stop offset="100%" stopColor="#10B981" />
-                    </linearGradient>
-                  </defs>
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <p className="text-sm text-gray-500 text-center py-8">
-                Dados insuficientes para o gráfico
-              </p>
-            )}
-          </CardContent>
-        </Card>
+        {visibleCards.sessoes_por_dia && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Sessões por Dia da Semana</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {dashboardData?.sessoes_por_dia?.length > 0 ? (
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={dashboardData.sessoes_por_dia}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="dia" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="url(#colorGradient2)" />
+                    <defs>
+                      <linearGradient id="colorGradient2" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#14B8A6" />
+                        <stop offset="100%" stopColor="#10B981" />
+                      </linearGradient>
+                    </defs>
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <p className="text-sm text-gray-500 text-center py-8">
+                  Dados insuficientes para o gráfico
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
