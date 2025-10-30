@@ -1,164 +1,99 @@
 # RegiFlex - Sistema de Gestão para Clínicas de Psicologia
 
-[![Status](https://img.shields.io/badge/Status-Comercialização-brightgreen)](https://github.com/artur-source/RegiFlex-teste)
-[![Tecnologia](https://img.shields.io/badge/Frontend-React%2018.3.1-blue)](https://reactjs.org/)
-[![Backend](https://img.shields.io/badge/Backend-Supabase-green)](https://supabase.com/)
-[![Última Correção](https://img.shields.io/badge/Última%20Correção-2025--10--10-brightgreen)](./BUGFIXES.md)
+[![GitHub Pages Status](https://github.com/artur-source/RegiFlex-teste/actions/workflows/pages/pages-build-deployment/badge.svg)](https://artur-source.github.io/RegiFlex-teste/)
 
-## Sobre o Projeto
+O RegiFlex é um sistema de gestão SaaS (Software as a Service) para clínicas e psicólogos autônomos, desenvolvido como um projeto de extensão acadêmica. Ele utiliza uma arquitetura moderna e escalável baseada no Supabase.
 
-O RegiFlex é uma **solução SaaS completa** para gestão de clínicas de psicologia, desenvolvida com arquitetura **multi-tenant** e **provisionamento automatizado**. O sistema foi projetado para ser comercializado como uma startup de **custo zero**, utilizando serviços com planos gratuitos robustos.
+## Status Atual do Projeto
 
-### 💰 Modelo de Negócio Validado
-- **Custo Operacional:** Apenas **R$ 3,33/mês** (domínio)
-- **Break-Even:** 1 cliente (R$ 34,90 > R$ 3,33)
-- **Planos:** Individual (R$ 34,90/mês) e Clínica (R$ 99,90/mês)
-- **Provisionamento:** 100% automatizado para novos clientes
+O projeto está **funcional** e as principais funcionalidades (Gestão de Pacientes, Agendamento, Relatórios e a Edge Function de IA) foram implementadas e sincronizadas.
 
-### 🔗 Links Importantes
-- **Página de Marketing:** [https://artur-source.github.io/RegiFlex/](https://artur-source.github.io/RegiFlex/)
-- **Contato Comercial:** regiflex.contato@gmail.com
+| Funcionalidade | Status | Observação |
+| :--- | :--- | :--- |
+| **Instalação** | **Funcional** | O processo de setup foi corrigido com scripts SQL para inicialização do banco de dados. |
+| **IA Integrada** | **Funcional** | Edge Function de previsão de *no-show* implantada e conectada ao frontend. (Modelo de simulação). |
+| **Relatórios** | **Funcional** | Módulo de relatórios avançados (gráficos e estatísticas) implementado. |
+| **Multi-Tenancy** | **Em Desenvolvimento** | O código de provisionamento automático (Edge Function) está pronto, mas a infraestrutura de banco de dados (tabela `clinicas` e RLS) ainda precisa ser implementada. |
 
-## 🚀 Tecnologias Utilizadas
+## 1. Tecnologias
 
-### Frontend
-- **React 18.3.1** - Biblioteca para construção de interfaces
-- **Vite 5.2.0** - Build tool e servidor de desenvolvimento
-- **Tailwind CSS** - Framework CSS utilitário
-- **Lucide React** - Biblioteca de ícones
+- **Frontend:** React.js, Vite, Tailwind CSS, Shadcn/ui, Recharts
+- **Backend/Database:** Supabase (PostgreSQL, Auth, Edge Functions)
 
-### Backend e Infraestrutura
-- **Supabase** - Backend-as-a-Service
-  - PostgreSQL com Row Level Security (RLS)
-  - Autenticação JWT integrada
-  - APIs RESTful geradas automaticamente
-  - Armazenamento de arquivos
+## 2. Instalação e Setup (Ambiente de Desenvolvimento)
 
-## ✅ Status das Funcionalidades
+Siga os passos abaixo para configurar o projeto localmente:
 
-| Funcionalidade | Status | Descrição |
-|---|---|---|
-| 🏥 **Gestão de Pacientes** | ✅ Completa | Cadastro, edição e histórico completo |
-| 📅 **Gestão de Sessões** | ✅ Completa | Agendamento e controle de sessões |
-| 🔐 **Autenticação** | ✅ Completa | Sistema seguro com diferentes perfis |
-| 📱 **QR Code** | ✅ Completa | Geração de códigos para check-in |
-| 📊 **Dashboard** | ✅ Completa | Visão geral e métricas principais |
-| 📈 **Relatórios Avançados** | 🚧 Em Desenvolvimento | Análises detalhadas e exportação |
-| 🤖 **IA Integrada** | 🚧 Em Desenvolvimento | Assistente inteligente e alertas |
-| 📱 **Mobile App** | 📋 Planejado | Aplicativo nativo para dispositivos móveis |
+### 2.1. Clone o Repositório
 
-## 🛠️ Instalação e Configuração
-
-### Pré-requisitos
-- Node.js 18+ 
-- npm ou yarn
-- Conta no Supabase
-
-### Passos para Instalação
-
-1. **Clone o repositório**
-   ```bash
-   git clone https://github.com/artur-source/RegiFlex-teste.git
-   cd RegiFlex-teste
-   ```
-
-2. **Instale as dependências (Frontend)**
-   ```bash
-   cd frontend && npm install && cd ..
-   ```
-
-3. **Configure as variáveis de ambiente (Frontend)**
-   ```bash
-   cp frontend/.env.example frontend/.env
-   ```
-   
-   Edite o arquivo `frontend/.env` com suas credenciais do Supabase:
-   ```env
-   VITE_SUPABASE_URL=sua_url_do_supabase
-   VITE_SUPABASE_ANON_KEY=sua_chave_anonima_do_supabase
-   ```
-
-4. **Configure o Banco de Dados (Supabase)**
-   ```bash
-   - Crie um novo projeto no Supabase.
-- No seu projeto Supabase, vá em **SQL Editor** e execute o script `supabase/schema.sql` para criar a estrutura de tabelas, RLS e dados de teste.
-- **Importante:** O script `schema.sql` inclui um `tenant_id` de teste ('00000000-0000-0000-0000-000000000001'). Para testar o login, você precisará criar um usuário de teste no Supabase Auth (ex: `admin@regiflex.com` com a senha `password`) e garantir que o `id` deste usuário esteja associado ao `tenant_id` de teste na tabela `profiles`.
-
-5. **Execute o projeto (Frontend)**
-   ```bash
-   cd frontend
-   npm run dev
-   ```
-   ```
-
-6. **Acesse o sistema**
-   - URL: `http://localhost:5173` (ou a porta indicada pelo Vite)
-   - Credenciais de teste:
-     - **Admin:** admin@regiflex.com / password (após configurar o usuário no Supabase Auth)
-     - **Psicólogo:** psicologo1@regiflex.com / password (após configurar o usuário no Supabase Auth)
-     - **Recepcionista:** recepcionista1@regiflex.com / password (após configurar o usuário no Supabase Auth)
-
-## 🔧 Correções Recentes
-
-### Outubro 2025
-- **✅ Corrigido:** Erro de sintaxe em `Sessoes.jsx` que impedia a execução do servidor
-- **✅ Melhorado:** Documentação de instalação e configuração
-- **✅ Adicionado:** Histórico de correções em `BUGFIXES.md`
-
-Para ver o histórico completo de correções, consulte [BUGFIXES.md](./BUGFIXES.md).
-
-## 🏗️ Arquitetura do Sistema
-
-O RegiFlex utiliza uma arquitetura moderna e escalável:
-
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   React App     │    │   Supabase      │    │   PostgreSQL    │
-│   (Frontend)    │◄──►│   (Backend)     │◄──►│   (Database)    │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+```bash
+git clone https://github.com/artur-source/RegiFlex-teste.git
+cd RegiFlex-teste
 ```
 
-### Componentes Principais
-- **AuthContext:** Gerenciamento de autenticação e sessões
-- **Dashboard:** Painel principal com métricas e navegação
-- **Pacientes:** CRUD completo para gestão de pacientes
-- **Sessões:** Agendamento e controle de sessões terapêuticas
-- **QRCode:** Geração de códigos para facilitar check-ins
+### 2.2. Configure o Supabase CLI
 
-## 🔒 Segurança
+Certifique-se de ter a [Supabase CLI](https://supabase.com/docs/guides/cli) instalada e logada.
 
-- **Autenticação JWT** via Supabase Auth
-- **Row Level Security (RLS)** no PostgreSQL
-- **Criptografia** de dados sensíveis
-- **Controle de acesso** baseado em perfis (admin, psicólogo, recepcionista)
+```bash
+# Instalar a CLI (se necessário)
+# curl -L https://github.com/supabase/cli/releases/latest/download/supabase_linux_amd64.tar.gz | tar -xz && sudo mv supabase /usr/local/bin
+# supabase login
+```
 
-## 📚 Documentação Adicional
+### 2.3. Vincule ao Projeto Remoto
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md) - Detalhes da arquitetura do sistema
-- [CONTRIBUTING.md](./CONTRIBUTING.md) - Guia para contribuidores
-- [DEPLOYMENT.md](./DEPLOYMENT.md) - Instruções de deploy
-- [BUGFIXES.md](./BUGFIXES.md) - Histórico de correções
+Vincule seu ambiente local ao projeto Supabase remoto.
 
-## 🤝 Contribuindo
+- **Project Ref:** `upbsldljfejaieuveknr`
 
-Este projeto está em desenvolvimento ativo. Para contribuir:
+```bash
+supabase link --project-ref upbsldljfejaieuveknr
+```
 
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+### 2.4. Inicialize o Banco de Dados
 
-## 📄 Licença
+Execute os scripts SQL para criar o schema e popular com dados de teste.
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+```bash
+# Cria as tabelas e políticas de segurança (RLS)
+supabase db reset --local
+# O script `schema.sql` e `seed.sql` serão aplicados automaticamente.
+```
+**Nota:** O comando `supabase db reset --local` é usado para desenvolvimento local. Para aplicar o schema no projeto remoto, use o Dashboard ou o comando `supabase migration up`.
 
-## 📞 Suporte
+### 2.5. Instale as Dependências do Frontend e Inicie
 
-Para dúvidas, sugestões ou reportar problemas:
-- Abra uma [issue](https://github.com/artur-source/RegiFlex-teste/issues)
-- Entre em contato através do [repositório principal](https://github.com/artur-source/RegiFlex)
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
----
+O frontend estará acessível em `http://localhost:5173` (ou porta similar).
 
-**RegiFlex** - Transformando a gestão de clínicas de psicologia com tecnologia moderna e segura.
+### 2.6. Credenciais de Teste
+
+Use as seguintes credenciais para acessar o sistema após a inicialização do banco de dados:
+
+| Campo | Valor |
+| :--- | :--- |
+| **Email** | `admin@regiflex.com` |
+| **Senha** | `password` |
+
+## 3. Edge Functions
+
+As Edge Functions foram implantadas no projeto remoto.
+
+| Função | Descrição | Status |
+| :--- | :--- | :--- |
+| `predict-no-show` | Previsão de risco de *no-show* em sessões agendadas. | **Deploy Feito** |
+| `provision-new-tenant` | Lógica de provisionamento automático de novos clientes. | **Deploy Feito** (Requer infraestrutura de DB para funcionar) |
+
+## 4. Próximos Passos Críticos
+
+Os próximos passos para a viabilidade comercial do RegiFlex são:
+
+1.  **Implementação Completa do Multi-Tenancy:** Criar a tabela `clinicas` e refinar as políticas de RLS para garantir o isolamento de dados entre clientes.
+2.  **Refinamento da IA:** Substituir o modelo de simulação (`predict-no-show/index.ts`) por um modelo treinado com dados reais.
+3.  **Conclusão dos Relatórios Avançados:** Implementar a funcionalidade de exportação de dados (CSV/PDF) no módulo de relatórios.
