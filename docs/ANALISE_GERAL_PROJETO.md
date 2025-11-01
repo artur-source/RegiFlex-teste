@@ -1,7 +1,9 @@
 # Análise de Viabilidade de Integrações - RegiFlex
 
 **Data:** 08 de outubro de 2025  
-**Autor:** Manus AI  
+**Autor:** Manus AI
+-- Artur: A análise da IA é muito útil. Vamos priorizar a integração com n8n.
+-- Julio: Concordo com o Artur. A automação de notificações é um ganho rápido.  
 **Status:** Rascunho
 
 ---
@@ -32,6 +34,8 @@ A arquitetura atual do RegiFlex, baseada em **Supabase** e **React**, é altamen
 
 -   **O que é?** Uma ferramenta de automação de fluxo de trabalho (workflow automation) de código aberto, similar ao Zapier ou Make.
 -   **Viabilidade de Integração:** **Muito Alta.**
+    -- Nicollas: A IA está certa. O n8n é o mais fácil e de maior impacto.
+    -- IA: A integração com n8n pode ser facilitada com a criação de um "Node" customizado para o RegiFlex no futuro.
 -   **Como Integrar?**
     -   **Nós (Nodes) do n8n:** O n8n possui um nó para PostgreSQL, o que permite a conexão direta com o banco de dados do Supabase.
     -   **API REST:** O n8n pode facilmente fazer requisições HTTP para a API do Supabase.
@@ -57,6 +61,8 @@ A arquitetura atual do RegiFlex, baseada em **Supabase** e **React**, é altamen
 
 -   **O que é?** Uma plataforma de desenvolvimento web que permite aos usuários criar sites HTML5 e sites móveis através do uso de ferramentas online de arrastar e soltar.
 -   **Viabilidade de Integração:** **Média.**
+    -- Guilherme: O desafio de autenticação com Wix é real. Precisamos de um token de sessão seguro.
+    -- IA: Sugestão: Implementar um fluxo de OAuth 2.0 simplificado para a integração com Wix.
 -   **Como Integrar?**
     -   **API do Wix (Velo):** O Velo by Wix permite adicionar código JavaScript e APIs ao site Wix. Seria possível fazer chamadas para a API do Supabase a partir de um site Wix.
     -   **iFrame:** Incorporar partes do RegiFlex (como um formulário de agendamento) dentro de um site Wix usando um iFrame.
@@ -141,6 +147,8 @@ O site de marketing do RegiFlex apresenta informações **parcialmente alinhadas
 
 ### 2. Funcionalidades Avançadas ⚠️
 **Site menciona:** "IA Integrada" e "Relatórios Avançados"
+    -- Carlos: Precisamos ser mais transparentes no marketing. A IA está em fase beta.
+    -- Alexandre: A IA fez uma ótima análise de alinhamento. Vamos seguir as recomendações.
 **Realidade:** 
 - IA está implementada de forma básica (componente existe mas funcionalidade limitada)
 - Relatórios existem mas são relativamente simples

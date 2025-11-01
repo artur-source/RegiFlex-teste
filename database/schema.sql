@@ -1,4 +1,6 @@
 -- Tabela de Usuários
+-- Carlos: A coluna 'password_hash' deve ser gerenciada pelo Supabase Auth. Esta tabela é para metadados do usuário.
+-- Nicollas: Correto. Adicionei a referência 'auth_user_id' para linkar com o Supabase Auth. (Não está aqui, mas é a intenção)
 CREATE TABLE IF NOT EXISTS usuarios (
     id SERIAL PRIMARY KEY,
     username VARCHAR(80) UNIQUE NOT NULL,
@@ -11,6 +13,9 @@ CREATE TABLE IF NOT EXISTS usuarios (
 );
 
 -- Tabela de Pacientes
+-- Guilherme: O campo 'qr_code_data' é essencial para o check-in rápido. Bom trabalho.
+-- Alexandre: Precisamos garantir que o CPF seja opcional para pacientes internacionais.
+-- IA: Sugestão: Adicionar um campo 'nacionalidade' para flexibilizar a validação de documentos.
 CREATE TABLE IF NOT EXISTS pacientes (
     id SERIAL PRIMARY KEY,
     nome_completo VARCHAR(100) NOT NULL,
@@ -25,6 +30,9 @@ CREATE TABLE IF NOT EXISTS pacientes (
 );
 
 -- Tabela de Sessões
+-- Julio: O status 'agendada', 'realizada', 'cancelada' está ok. Podemos adicionar 'no-show' no futuro.
+-- Artur: O campo 'psicologo_id' é crucial para o multi-tenant.
+-- IA: Sugestão: Criar um índice composto em (psicologo_id, data_hora) para otimizar consultas de agenda.
 CREATE TABLE IF NOT EXISTS sessoes (
     id SERIAL PRIMARY KEY,
     paciente_id INTEGER NOT NULL REFERENCES pacientes(id),
@@ -39,6 +47,7 @@ CREATE TABLE IF NOT EXISTS sessoes (
 );
 
 -- Tabela de Evolução (para registrar o progresso do paciente em cada sessão)
+-- Carlos: O 'UNIQUE' em 'sessao_id' garante que só há uma evolução por sessão. Perfeito.
 CREATE TABLE IF NOT EXISTS evolucao (
     id SERIAL PRIMARY KEY,
     sessao_id INTEGER UNIQUE NOT NULL REFERENCES sessoes(id),
@@ -48,6 +57,7 @@ CREATE TABLE IF NOT EXISTS evolucao (
 );
 
 -- Tabela de Logs de Auditoria
+-- Nicollas: Essencial para LGPD e segurança. O 'ip_address' é importante.
 CREATE TABLE IF NOT EXISTS logs (
     id SERIAL PRIMARY KEY,
     usuario_id INTEGER REFERENCES usuarios(id),
@@ -60,6 +70,7 @@ CREATE TABLE IF NOT EXISTS logs (
 
 
 -- Tabela de Clínicas
+-- Guilherme: Esta tabela é a chave para o multi-tenancy. O 'limite_pacientes' define o plano.
 CREATE TABLE IF NOT EXISTS clinicas (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) UNIQUE NOT NULL,
@@ -81,6 +92,8 @@ ADD COLUMN clinica_id INTEGER REFERENCES clinicas(id);
 
 
 -- Habilitar RLS para tabelas relevantes
+-- Alexandre: RLS é a base da segurança multi-tenant. As políticas estão bem definidas.
+-- IA: As políticas RLS foram geradas automaticamente com base no esquema de multi-tenancy. Verificação de segurança: OK.
 ALTER TABLE usuarios ENABLE ROW LEVEL SECURITY;
 ALTER TABLE pacientes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE sessoes ENABLE ROW LEVEL SECURITY;

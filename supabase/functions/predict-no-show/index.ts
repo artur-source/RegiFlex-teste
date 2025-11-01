@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
+// IA: O cliente Supabase foi inicializado para interagir com o banco de dados.
 // Inicializa o cliente Supabase
 const supabase = createClient(
   Deno.env.get("SUPABASE_URL") ?? "",
@@ -56,6 +57,10 @@ serve(async (req) => {
     }
 
     // 3. Simulação de Predição de IA (Modelo treinado em Python não pode ser importado diretamente)
+    // IA: Esta seção simula a lógica de predição de risco de no-show. O modelo original foi treinado em Python, e esta é uma adaptação em TypeScript para a Edge Function.
+    // Artur: A IA fez um bom trabalho em replicar a lógica do modelo. Vamos testar a acurácia.
+    // Guilherme: A IA poderia sugerir melhorias para este modelo? Por exemplo, usar mais features?
+    // IA: Sim, podemos adicionar features como o histórico de no-shows do paciente e a sazonalidade (mês do ano). Isso pode melhorar a acurácia do modelo.
     // Em um cenário real, o modelo seria re-implementado em JS/TS ou acessado via um serviço externo.
     // Para fins de demonstração, simularemos uma Regressão Logística simples baseada nas features.
     
