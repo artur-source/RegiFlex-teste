@@ -13,7 +13,7 @@ O projeto está **funcional** e as principais funcionalidades (Gestão de Pacien
 | **Instalação** | **Funcional** | O processo de setup foi corrigido com scripts SQL para inicialização do banco de dados. |
 | **IA Integrada** | **Funcional** | Edge Function de previsão de *no-show* implantada e conectada ao frontend. (Modelo de simulação). |
 | **Relatórios** | **Funcional** | Módulo de relatórios avançados (gráficos e estatísticas) implementado. |
-| **Multi-Tenancy** | **Em Desenvolvimento** | O código de provisionamento automático (Edge Function) está pronto, mas a infraestrutura de banco de dados (tabela `clinicas` e RLS) ainda precisa ser implementada. |
+| **Multi-Tenancy** | **Funcional** | Infraestrutura de banco de dados (tabela `clinicas` e RLS) e código de provisionamento automático (Edge Function) implementados. |
 
 ## 1. Tecnologias
 
@@ -88,12 +88,11 @@ As Edge Functions foram implantadas no projeto remoto.
 | Função | Descrição | Status |
 | :--- | :--- | :--- |
 | `predict-no-show` | Previsão de risco de *no-show* em sessões agendadas. | **Deploy Feito** |
-| `provision-new-tenant` | Lógica de provisionamento automático de novos clientes. | **Deploy Feito** (Requer infraestrutura de DB para funcionar) |
+| `provision-new-tenant` | Lógica de provisionamento automático de novos clientes. | **Deploy Feito** |
 
 ## 4. Próximos Passos Críticos
 
 Os próximos passos para a viabilidade comercial do RegiFlex são:
 
-1.  **Implementação Completa do Multi-Tenancy:** Criar a tabela `clinicas` e refinar as políticas de RLS para garantir o isolamento de dados entre clientes.
-2.  **Refinamento da IA:** Substituir o modelo de simulação (`predict-no-show/index.ts`) por um modelo treinado com dados reais.
-3.  **Conclusão dos Relatórios Avançados:** Implementar a funcionalidade de exportação de dados (CSV/PDF) no módulo de relatórios.
+1.  **Refinamento da IA:** Substituir o modelo de simulação (`predict-no-show/index.ts`) por um modelo treinado com dados reais.
+2.  **Conclusão dos Relatórios Avançados:** Implementar a funcionalidade de exportação de dados (CSV/PDF) no módulo de relatórios.
