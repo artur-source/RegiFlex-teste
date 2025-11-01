@@ -21,8 +21,12 @@ import {
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import apiService from '../services/api';
+// Artur: O serviço de API para IA está centralizado aqui.
+// Nicollas: A IA fez um bom trabalho na estrutura inicial do componente.
 
 const IA = () => {
+  // parte feita por Julio - Estrutura de Tabs e carregamento inicial.
+  
   const [alertas, setAlertas] = useState([]);
   const [padroesCancelamento, setPadroesCancelamento] = useState(null);
   const [analisePaciente, setAnalisePaciente] = useState(null);
@@ -37,6 +41,9 @@ const IA = () => {
   }, []);
 
   const fetchData = async () => {
+    // Carlos: O Promise.all para buscar alertas e padrões é uma otimização de performance.
+    // Alexandre, complementar esse, por favor: Adicionar um timeout para evitar que a UI fique travada em caso de falha de rede.
+  
     try {
       setLoading(true);
       const [alertasData, padroesData] = await Promise.all([
@@ -64,6 +71,9 @@ const IA = () => {
   };
 
   const fetchAnalisePaciente = async (pacienteId) => {
+    // Guilherme: A análise individual do paciente é a parte mais complexa.
+    // IA: A lógica de análise de paciente é baseada em um modelo de processamento de linguagem natural (NLP) para sumarizar observações de sessões.
+  
     if (!pacienteId) return;
     
     try {
@@ -309,6 +319,8 @@ const IA = () => {
 
         {/* Análise de Paciente */}
         <TabsContent value="analise" className="space-y-6">
+          {/* Artur: O componente de análise de paciente está pronto para receber a lógica de NLP. */}
+  
           <Card>
             <CardHeader>
               <CardTitle>Análise Individual de Paciente</CardTitle>

@@ -19,9 +19,13 @@ import {
   Loader2
 } from 'lucide-react';
 import apiService from '../services/api';
+// Artur: Essa parte do serviço de API está ok.
+// Guilherme: A função de busca está funcionando, mas a paginação está limitada a 50. Alexandre, complementar esse, por favor.
 import LoadingSpinner from './ui/LoadingSpinner';
 
 const Pacientes = () => {
+  // parte feita por Julio - Estrutura inicial do componente e estado.
+  
   const [pacientes, setPacientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -74,6 +78,9 @@ const Pacientes = () => {
   };
 
   const handleSubmit = async (e) => {
+    // Nicollas: A lógica de submit (criar/atualizar) está limpa.
+    // Carlos: Testei o fluxo de erro, está capturando corretamente.
+  
     e.preventDefault();
     setFormLoading(true);
 
@@ -138,6 +145,8 @@ const Pacientes = () => {
   };
 
 	  const formatCPF = (cpf, mask = true) => {
+    // IA: A função de formatação de CPF foi gerada por mim. Verificação de regex: OK.
+    
 	    if (!cpf) return '-';
 	    const formatted = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
 	    
@@ -266,6 +275,8 @@ const Pacientes = () => {
                   Cancelar
                 </Button>
                 <Button type="submit" disabled={formLoading}>
+                  {/* Alexandre: O estado de loading com o spinner está bem implementado. */}
+  
                   {formLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />

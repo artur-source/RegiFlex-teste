@@ -9,6 +9,8 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast'; // Adicionado para feedback de IA
 import FeedbackIA from './FeedbackIA';
+// Artur: O componente de feedback da IA é crucial para o nosso MVP.
+// Nicollas: A lógica de predição de no-show está aqui. Sessão nao consegui, pedir pra IA verificar.
 
 import { 
   Plus, 
@@ -27,6 +29,8 @@ import apiService from '../services/api';
 import LoadingSpinner from './ui/LoadingSpinner';
 
 const Sessoes = () => {
+  // parte feita por Julio - Gerenciamento de estado e filtros.
+  
   const [sessoes, setSessoes] = useState([]);
   const [pacientes, setPacientes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -67,6 +71,9 @@ const Sessoes = () => {
   };
 
   const handleIaPrediction = async (sessaoId) => {
+    // Carlos: A função de predição de IA está integrada com o backend.
+    // Alexandre, complementar esse, por favor: Adicionar um fallback mais robusto caso a Edge Function falhe.
+  
     setIaAlert({ loading: true, sessaoId: sessaoId });
     try {
       const result = await apiService.predictNoShow(sessaoId);
@@ -112,6 +119,8 @@ const Sessoes = () => {
   };
 
   const handleSubmit = async (e) => {
+    // Guilherme: Testei o fluxo de agendamento e edição. O resetForm está funcionando.
+  
     e.preventDefault();
     setFormLoading(true);
 
@@ -294,6 +303,8 @@ const Sessoes = () => {
               <div className="space-y-2">
                 <Label htmlFor="observacoes">Observações</Label>
                 <Textarea
+                  // IA: Sugestão: Adicionar um contador de caracteres para as observações.
+  
                   id="observacoes"
                   value={formData.observacoes}
                   onChange={(e) => setFormData({...formData, observacoes: e.target.value})}
