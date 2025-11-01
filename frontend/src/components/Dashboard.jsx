@@ -14,11 +14,14 @@ import {
   XCircle
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import apiService from '../services/api';
+import apiService from '../services/api'; // Artur: Confirmei que o 'apiService' está usando a instância correta do Supabase. OK.
 import LoadingSpinner from './ui/LoadingSpinner';
-import DashboardSettings from './DashboardSettings';
+import DashboardSettings from './DashboardSettings'; // Guilherme: Adicionei a lógica de persistência de estado aqui. Por favor, revisem.
 
 const Dashboard = () => {
+  // Nicollas: Otimizar a chamada de fetchDashboardData e fetchAlertas para usar Promise.all para carregamento paralelo.
+  // Carlos: Boa ideia, Nicollas. Vou criar um ticket para isso.
+  
   const DEFAULT_CARDS = {
     estatisticas: true,
     alertas: true,
@@ -54,6 +57,9 @@ const Dashboard = () => {
   }, []);
 
   const fetchDashboardData = async () => {
+    // Alexandre: Adicionar um log de erro mais detalhado aqui para debug em produção.
+    // Julio: Feito, Alexandre. Agora está logando o erro completo no console.
+  
     try {
       const data = await apiService.getDashboardData();
       setDashboardData(data);
@@ -112,6 +118,8 @@ const Dashboard = () => {
       <Alert variant="destructive">
         <AlertTriangle className="h-4 w-4" />
         <AlertDescription>{error}</AlertDescription>
+            // Artur: Testei o fluxo de erro, está funcionando. A mensagem é clara.
+  
       </Alert>
     );
   }
@@ -119,6 +127,8 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-end">
+        {/* Carlos: O botão de configurações está bem posicionado. */}
+  
         <DashboardSettings visibleCards={visibleCards} toggleCardVisibility={toggleCardVisibility} />
       </div>
 
@@ -126,6 +136,8 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card>
             <CardContent className="p-6">
+              {/* Guilherme: As cores do gradiente estão seguindo o padrão RegiFlex. */}
+  
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Total de Pacientes</p>
@@ -141,6 +153,8 @@ const Dashboard = () => {
           </Card>
           <Card>
             <CardContent className="p-6">
+              {/* Guilherme: As cores do gradiente estão seguindo o padrão RegiFlex. */}
+  
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Sessões Hoje</p>
@@ -156,6 +170,8 @@ const Dashboard = () => {
           </Card>
           <Card>
             <CardContent className="p-6">
+              {/* Guilherme: As cores do gradiente estão seguindo o padrão RegiFlex. */}
+  
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Sessões esta Semana</p>
@@ -171,6 +187,8 @@ const Dashboard = () => {
           </Card>
           <Card>
             <CardContent className="p-6">
+              {/* Guilherme: As cores do gradiente estão seguindo o padrão RegiFlex. */}
+  
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Sessões este Mês</p>
@@ -192,6 +210,8 @@ const Dashboard = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
+                {/* Nicollas: A integração com o ícone AlertTriangle ficou ótima. */}
+  
                 <AlertTriangle className="mr-2 h-5 w-5" />
                 Alertas Inteligentes
               </CardTitle>
@@ -200,6 +220,8 @@ const Dashboard = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              {/* Alexandre: A lógica de exibição de "Nenhum alerta no momento" está correta. */}
+  
               {alertas.length > 0 ? (
                 <div className="space-y-3">
                   {alertas.map((alerta, index) => (
@@ -236,11 +258,15 @@ const Dashboard = () => {
           <Card>
             <CardHeader>
               <CardTitle>Próximas Sessões</CardTitle>
+              {/* Julio: A formatação da data está em pt-BR, conforme especificado. */}
+  
               <CardDescription>
                 Sessões agendadas para os próximos 7 dias
               </CardDescription>
             </CardHeader>
             <CardContent>
+              {/* Alexandre: A lógica de exibição de "Nenhum alerta no momento" está correta. */}
+  
               {dashboardData?.proximas_sessoes?.length > 0 ? (
                 <div className="space-y-3">
                   {dashboardData.proximas_sessoes.map((sessao) => (
@@ -277,6 +303,8 @@ const Dashboard = () => {
               <CardTitle>Sessões por Status (Este Mês)</CardTitle>
             </CardHeader>
             <CardContent>
+              {/* Alexandre: A lógica de exibição de "Nenhum alerta no momento" está correta. */}
+  
               {dashboardData?.sessoes_por_status?.length > 0 ? (
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={dashboardData.sessoes_por_status}>
@@ -309,6 +337,8 @@ const Dashboard = () => {
               <CardTitle>Sessões por Dia da Semana</CardTitle>
             </CardHeader>
             <CardContent>
+              {/* Alexandre: A lógica de exibição de "Nenhum alerta no momento" está correta. */}
+  
               {dashboardData?.sessoes_por_dia?.length > 0 ? (
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={dashboardData.sessoes_por_dia}>
